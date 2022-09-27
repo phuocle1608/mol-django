@@ -160,7 +160,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DATETIME_FORMAT = [
     '%Y-%m-%d %H:%M:%S',     # '2006-10-25 14:30:59'
 ]
