@@ -25,9 +25,9 @@ class Customer(models.Model):
     Customer_Id = models.AutoField(primary_key=True)
     Customer_Name = models.CharField(max_length=255)
     Customer_Facebook = models.CharField(max_length=255)
-    Customer_Phone = models.CharField(max_length=10)
-    Customer_ZaloName = models.CharField(max_length=255)
-    Customer_Address = models.CharField(max_length=255)
+    Customer_Phone = models.CharField(max_length=10, null=True)
+    Customer_ZaloName = models.CharField(max_length=255, null=True)
+    Customer_Address = models.CharField(max_length=255, null=True)
     Source_Id = models.ForeignKey(Source, on_delete=models.CASCADE, db_column='Source_Id')
 
     def __str__(self):
