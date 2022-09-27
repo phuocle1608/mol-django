@@ -5,7 +5,7 @@ from . import views
 app_name = 'QLBH'
 
 urlpatterns = [
-    path('', views.index, name ='index'),
+    path('', views.Homepage.as_view(), name ='index'),
     path('donhang/', views.DonhangTonghop.as_view(), name = 'dsdonhang'),
     path('donhang/<int:donhang_id>/', views.DonhangDetail.as_view(), name = 'donhang_detail'),
     path('test/', views.Test.as_view(), name='test'),

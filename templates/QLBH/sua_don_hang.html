@@ -1,5 +1,9 @@
 {% extends 'QLBH/base.html' %}
 
+{% block title %}
+    <title>Đơn hàng {{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }}</title>
+{% endblock %}
+
 {% block content %}
     <!-- Begin Page Content -->
     <div class="container-fluid">

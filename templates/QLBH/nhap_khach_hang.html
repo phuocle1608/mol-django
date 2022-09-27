@@ -1,5 +1,9 @@
 {% extends 'QLBH/base.html' %}
 
+{% block title %}
+    <title>Nhập khách hàng</title>
+{% endblock %}
+
 {% block nav_item_nhapkhachhang %}active{% endblock %}
 
 {% block content %}
@@ -17,7 +21,7 @@
     </div>
     </div> -->
 
-    <div class="card shadow mb-4 col-xl-8 ml-5">
+    <div class="card shadow mb-4 col-xl-8 col-sm-8 col-xs-8 col-md-8 ml-5">
         <div class="card-body">
 
             <form action="{% url 'QLBH:nhap_khach_hang' %}" method="post">

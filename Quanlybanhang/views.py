@@ -11,9 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
-def index(request):
-    name = 'ALSNDASDN'
-    return render(request, 'html/index.html', {'a': name})
+
 
 def handle_not_found(request, exception):
     return render(request, 'QLBH/404.html')
@@ -34,6 +32,10 @@ def cursorbyname(rawsql):
 #     # for item in list_donhang:
 #
 #     return render(request, 'html/danhsachdonhang.html', {'list_donhang': list_donhang})
+
+class Homepage(View):
+    def get(self, request):
+        return redirect('/donhang/')
 
 class Login(View):
     def get(self, request):
@@ -61,7 +63,18 @@ class CursorByName():
 class DonhangTonghop(LoginRequiredMixin, View):
     login_url = '/login/'
     def get(self, request):
-        list_donhang = cursorbyname("call danh_sach_don_hang()")
+        # call danh_sach_don_hang()
+        list_donhang = cursorbyname("""
+            select 
+                a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, a.Deadline, 
+                d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
+                a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment as Deft, '' as Note        
+            from Quanlybanhang_donhang a 
+                left join Quanlybanhang_product b on a.Product_Id = b.Product_Id 
+                left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
+                left join Quanlybanhang_workingstatus d on d.Workingstatus_Id = a.Workingstatus_Id
+            where a.IsDelete = 0
+        """)
         return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang': list_donhang})
 
 # <th>Mã đơn</th>
@@ -131,7 +144,17 @@ class Updatedonhang(LoginRequiredMixin, View):
         product = models.Product.objects.all()
         working = models.Workingstatus.objects.all()
         try:
-            donhang = cursorbyname("call update_don_hang({})".format(donhang_id))[0]
+            # update_don_hang
+            donhang = cursorbyname("""
+                select 
+                    a.*, b.Product_Name, c.Customer_Name, d.Workingstatus_Name, e.Source_Name, c.*, DATE_FORMAT(a.Deadline, "%Y-%m-%dT%H:%i:%s") as Deadline2
+                from Quanlybanhang_donhang a 
+                    left join Quanlybanhang_product b on a.Product_Id = b.Product_Id 
+                    left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
+                    left join Quanlybanhang_workingstatus d on d.Workingstatus_Id = a.Workingstatus_Id
+                    left join Quanlybanhang_source e on e.Source_Id = c.Source_Id
+                where a.Donhang_Id = {} and a.IsDelete = 0
+            """.format(donhang_id))[0]
         except:
             return handle_not_found(request, '404')
         # print(donhang)

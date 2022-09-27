@@ -1,6 +1,10 @@
 {% extends 'QLBH/base.html' %}
 {% load static %}
 
+{% block title %}
+    <title>Đơn hàng #{{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }}</title>
+{% endblock %}
+
 {% block content %}
     <div class="container-fluid">
 
