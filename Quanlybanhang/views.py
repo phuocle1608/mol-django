@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
 
+connection.force_debug_cursor = True
 
 def handle_not_found(request, exception):
     return render(request, 'QLBH/404.html')
