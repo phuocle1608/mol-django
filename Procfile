@@ -1,2 +1,1 @@
-web: MolSite main.wsgi
-
+web: gunicorn MolSite.wsgi
