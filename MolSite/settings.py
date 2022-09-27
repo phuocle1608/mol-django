@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-4i_5%_ydewfg0l&trc=3zvwqxj%=-w*cg1i9#8^!ojr4ch^kcn
 # SECURITY WARNING: don't run with debug turned on in production!
 # COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 
-DEBUG = False
+# DEBUG = False
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['mol-django.herokuapp.com', 'localhost', '127.0.0.1', 'remotemysql.com', 'phpmyadmin.net']
 
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'MolSite.urls'
@@ -160,7 +162,8 @@ STATIC_ROOT = os.path.join(BASE_DIR,'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-
+# Serve compressed and manifested static files
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DATETIME_FORMAT = [
     '%Y-%m-%d %H:%M:%S',     # '2006-10-25 14:30:59'
