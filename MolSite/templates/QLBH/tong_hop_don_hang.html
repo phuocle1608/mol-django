@@ -1,0 +1,71 @@
+{% extends 'QLBH/base.html' %}
+{% load static %}
+
+{% block nav_item_donhang %}active{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+
+               <!-- Page Heading -->
+               <h2 class="h3 mb-2 text-gray-800">Danh sách đơn hàng</h2>
+
+               <!-- DataTales Example -->
+               <div class="card shadow mb-4">
+                  <!-- <div class="card-header py-3"> -->
+                  <!-- <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6> -->
+                  <!-- </div> -->
+                  <div class="card-body">
+                     <div class="table-responsive">
+                        <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                           <!--Table head-->
+                           <thead>
+                              <tr>
+
+                                 <th class="col-sm-1">Mã đơn</th>
+                                 <th class="col-sm-2">Tên logo</th>
+                                 <th class="col-sm-1">Loại đơn</th>
+                                 <th class="col-sm-1">Deadline</th>
+                                 <th class="col-sm-1">Tiến độ thực hiện</th>
+                                 <th class="col-sm-1">Ngày tạo đơn</th>
+                                 <th class="col-sm-1">Tên khách hàng</th>
+                                 <th class="col-sm-1">Số điện thoại</th>
+                                 <th class="col-sm-1">Tổng giá trị</th>
+                                 <th class="col-sm-1">Đã thanh toán</th>
+                                 <th class="col-sm-1">Chưa thanh toán</th>
+{#                                 <th class="col-sm-1">Ghi chú</th>#}
+                              </tr>
+                           </thead>
+                           <!--Table head-->
+                           <!--Table body-->
+
+{#                            a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, a.Deadline, #}
+{#                            d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, #}
+{#                            a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment as Deft, '' as Note    #}
+                            <tbody>
+                                {% for item in list_donhang %}
+                                    <tr>
+
+                                        <td><a href="{% url 'QLBH:donhang_detail' item.Donhang_Id %}">#00{{ item.Donhang_Id }}</a><sup><a href="{% url 'QLBH:sua_don_hang' item.Donhang_Id %}"><img src="{% static 'QLBH\img\edit.png' %}" width="15px"></a></sup></td>
+                                        <td>{{ item.Donhang_Name }}</td>
+                                        <td>{{ item.Flash_Flag }}</td>
+                                        <td>{{ item.Deadline|date:"Y-m-d" }}</td>
+                                        <td>{{ item.Workingstatus_Name }}</td>
+                                        <td>{{ item.CreatedDate|date:"Y-m-d"}}</td>
+                                        <td><a href="#">{{ item.Customer_Name }}</a></td>
+                                        <td>{{ item.Customer_Phone }}</td>
+                                        <td class="text-right pr-2">{{ item.Total |floatformat:"g"}}</td>
+                                        <td class="text-right mr-sm-2">{{ item.Donhang_Price_Payment|floatformat:"g"}}</td>
+                                        <td class="text-right mr-sm-2">{{ item.Deft |floatformat:"g"}}</td>
+{#                                        <td>{{ item.Note }}</td>#}
+
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                           <!--Table body-->
+                        </table>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+{% endblock %}

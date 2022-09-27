@@ -1,0 +1,2 @@
+web: MolSite main.wsgi
+

@@ -1,0 +1,174 @@
+{% extends 'QLBH/base.html' %}
+
+{% block content %}
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+
+
+
+       <!-- Page Heading -->
+       <h3 class="h3 font-weight-bold text-primary ml-4">Đơn hàng {{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }}</h3>
+    </div>
+    <!-- <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+
+        </div>
+    </div> -->
+
+    <div class="card shadow mb-4 col-xl-8 ml-5">
+        <div class="card-body">
+
+            <form action="{% url 'QLBH:sua_don_hang' donhang.Donhang_Id %}" method="post">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <div class="col">
+                        <input type="text" class="form-control form-control-custom" id="Donhang_Name" name="Donhang_Name" placeholder=" " value="{{ donhang.Donhang_Name }}" required>
+                        <label>Tên đơn hàng</label>
+                    </div>
+                </div>
+
+                <div class="form-group form-check">
+                    <input type="hidden" value="0" name="FlashDesign_Flag" id="FlashDesign_Flag">
+                    {% if donhang.FlashDesign_Flag == 1 %}
+                        <input type="checkbox" class="form-check-input" id="FlashDesign_Flag" name="FlashDesign_Flag" value="1" checked>
+                    {% else %}
+                        <input type="checkbox" class="form-check-input" id="FlashDesign_Flag" name="FlashDesign_Flag" value="1">
+                    {% endif %}
+
+                    <label class="form-check-label" for="FlashDesign_Flag">Hỏa tốc</label>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col">
+                        <select id="Customer_Id" class="form-control form-control-custom" name="Customer_Id" id="Customer_Id" required>
+                            <option></option>
+                            {% for cus in customer %}
+                                {% if cus.Customer_Id == donhang.Customer_Id %}
+                                    <option value="{{ cus.Customer_Id }}" selected>{{ cus.Customer_Name }} | {{ cus.Customer_Phone }}</option>
+                                {% else %}
+                                    <option value="{{ cus.Customer_Id }}">{{ cus.Customer_Name }} | {{ cus.Customer_Phone }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <label>Khách hàng</label>
+                    </div>
+
+{#                    <div class="col-xl-3 offset-xl-2">#}
+{#                        <select id="inputState" class="form-control form-control-custom" required>#}
+{#                            <option selected></option>#}
+{#                            <option>Loại 1</option>#}
+{#                            <option>Loại 2</option>#}
+{#                            <option>Loại 3</option>#}
+{#                        </select>#}
+{#                        <label>Loại logo</label>#}
+{#                    </div>#}
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-xl-3">
+                        <select id="Product_Id" class="form-control form-control-custom" name="Product_Id" id="Product_Id" required>
+                            <option></option>
+                            {% for item in product %}
+                                {% if item.Product_Id == donhang.Product_Id %}
+                                    <option value="{{ item.Product_Id }}" selected>{{ item.Product_Name }}</option>
+                                {% else %}
+                                    <option value="{{ item.Product_Id }}">{{ item.Product_Name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <label>Gói thiết kế</label>
+                    </div>
+
+                    <div class="col-xl-3 offset-xl-2">
+                        <input type="datetime-local" class="form-control form-control-custom" id="Deadline" name="Deadline" value="{{ donhang.Deadline2 }}">
+                        <label>Thời gian thực hiện</label>
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <!-- <label for="ordername" class="col-sm-2 col-form-label">Giá combo</label> -->
+                    <div class="col-xl-3 input-group">
+                        <input type="number" class="form-control form-control-custom" id="Donhang_Price_Combo" name="Donhang_Price_Combo" placeholder=" " value="{{ donhang.Donhang_Price_Combo }}" min="0" required>
+                        <label>Giá combo</label>
+                        <div class="input-group-append">
+                            <span class="input-group-text">VND</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <!-- <label for="ordername" class="col-sm-2 col-form-label">Giá combo</label> -->
+                    <div class="col-xl-3 input-group">
+                        <input type="number" class="form-control form-control-custom" id="Donhang_Price_Upsale" name="Donhang_Price_Upsale" value="{{ donhang.Donhang_Price_Upsale }}" placeholder=" " min="0" required>
+                        <label>Upsale</label>
+                        <div class="input-group-append">
+                            <span class="input-group-text">VND</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <!-- <label for="ordername" class="col-sm-2 col-form-label">Giá combo</label> -->
+                    <div class="col-xl-3 input-group">
+                        <input type="number" class="form-control form-control-custom" id="Donhang_Price_Discount" name="Donhang_Price_Discount" value="{{ donhang.Donhang_Price_Discount }}" placeholder=" " min="0" required>
+                        <label>Giảm giá</label>
+                        <div class="input-group-append">
+                            <span class="input-group-text">VND</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <!-- <label for="ordername" class="col-sm-2 col-form-label">Giá combo</label> -->
+                    <div class="col-xl-3 input-group">
+                        <input type="number" class="form-control form-control-custom" id="Donhang_Price_Payment" name="Donhang_Price_Payment" value="{{ donhang.Donhang_Price_Payment }}" placeholder=" " min="0" required>
+                        <label>Đã thanh toán</label>
+                        <div class="input-group-append">
+                            <span class="input-group-text">VND</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+
+                    <div class="col">
+                        <textarea class="form-control form-control-custom" id="Donhang_Require" name="Donhang_Require" rows="4" placeholder=" " required>{{ donhang.Donhang_Require }}</textarea>
+                        <label>Yêu cầu và hình ảnh</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col">
+                        <select id="Customer_Id" class="form-control form-control-custom" name="Workingstatus_Id" id="Workingstatus_Id" required>
+                            <option></option>
+                            {% for item in working %}
+                                {% if item.Workingstatus_Id == donhang.Workingstatus_Id %}
+                                    <option value="{{ item.Workingstatus_Id }}" selected> {{ item.Workingstatus_Name }}</option>
+                                {% else %}
+                                    <option value="{{ item.Workingstatus_Id }}"> {{ item.Workingstatus_Name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                        <label>Tiến độ thực hiện</label>
+                    </div>
+                </div>
+
+
+                <div class="pb-2 form-group row justify-content-end">
+                    <button class="btn btn-danger" type="submit" name="button" value="delete">Delete</button>
+                    <button class="btn btn-dark" type="reset">Clear</button>
+                    <button class="btn btn-secondary" type="submit" name="button" value="update">Update</button>
+{#                    <button class="btn btn-primary" type="submit">Insert</button>#}
+                </div>
+            </form>
+
+
+
+        </div>
+    </div>
+
+
+{% endblock %}

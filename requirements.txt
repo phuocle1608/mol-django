@@ -1,0 +1,5 @@
+django
+PyMySQL
+gunicorn
+django-heroku
+django-crispy-forms

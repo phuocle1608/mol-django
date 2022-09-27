@@ -1,0 +1,43 @@
+{% extends 'html/base.html' %}
+
+
+{#list_donhang#}
+{% block content %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Product</th>
+            <th>Ngày tạo</th>
+            <th>Deadline</th>
+            <th>Yêu cầu</th>
+            <th>Giá</th>
+            <th>Giảm trừ</th>
+            <th>Giá upsale</th>
+            <th>Tổng thanh toán</th>
+            <th>Đã thanh toán</th>
+
+
+        </tr>
+        {% for item in list_donhang %}
+            <tr>
+                <td>{{ item.Donhang_Id }}</td>
+                <td>{{ item.Donhang_Name }}</td>
+                <td>{{ item.Product_Id }}</td>
+                <td>{{ item.CreatedDate }}</td>
+                <td>{{ item.Deadline }}</td>
+                <td>{{ item.Donhang_Require }}</td>
+                <td>{{ item.Donhang_Price_Combo }}</td>
+                <td>{{ item.Donhang_Price_Discount }}</td>
+                <td>{{ item.Donhang_Price_Upsale }}</td>
+                <td>{{ item.Total }}</td>
+                <td>{{ item.Donhang_Price_Payment }}</td>
+            </tr>
+
+        {% endfor %}
+
+
+    </table>
+
+
+{% endblock %}

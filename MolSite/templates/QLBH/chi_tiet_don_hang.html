@@ -1,0 +1,211 @@
+{% extends 'QLBH/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container-fluid">
+
+
+
+        <!-- Page Heading -->
+        <h3 class="h3 font-weight-bold text-primary ml-4">#{{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }} <sup><a href="{% url 'QLBH:sua_don_hang' donhang.Donhang_Id %}"><img src="{% static 'QLBH\img\edit.png' %}" width="20px"></a></sup></h3>
+        
+
+        <div class="container-fluid mt-4">
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="card shadow mb-2">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Thông tin chung</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <p>Khách hàng: <a href="#">{{ donhang.Customer_Name }}</a></p>
+                                    </div>
+                                    <div class="col-sm">
+                                        <p>Số điện thoại: {{ donhang.Customer_Phone }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <p>Gói thiết kế: {{ donhang.Product_Name }}  <span style="color: #78261f; font-weight: bold; font-style: italic; font-size: 0.9rem">{{ donhang.Flash_Flag }}</span> </p>
+                                    </div>
+                                    <div class="col-sm">
+                                        <p>Tiến độ thực hiện: {{ donhang.Workingstatus_Name }}</p>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-2">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Yêu cầu</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="container-fluid mt-2">
+                                <div class="row">
+                                    <p>{{ donhang.Donhang_Require }}</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow mb-2">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Lịch sử</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="container-fluid mt-2">
+                                <div class="row">
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores in architecto delectus id fuga
+                                        culpa porro magni ratione vero adipisci. Ipsam impedit aperiam cum reprehenderit libero
+                                        excepturi dignissimos laudantium dolorum.</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="card shadow mb-2">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Thông tin khách hàng</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="container-fluid m-0 p-0">
+                                <div class="row">
+                                    <div class="col-sm-3 m-0 p-0">
+                                        Tên:
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ donhang.Customer_Name }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 m-0 p-0">
+                                        SĐT:
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ donhang.Customer_Phone }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 m-0 p-0">
+                                        FB:
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ donhang.Customer_Facebook }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 m-0 p-0">
+                                        Zalo:
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ donhang.Customer_ZaloName }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 m-0 p-0">
+                                        Địa chỉ:
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ donhang.Customer_Address }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-3 m-0 p-0">
+                                        Nguồn:
+                                    </div>
+                                    <div class="col-sm-9">
+                                        {{ donhang.Source_Name }}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="card shadow mb-2">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Thông tin thanh toán</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="container-fluid m-0 p-0">
+                                <div class="row">
+                                    <div class="col m-0 p-0">
+                                        Tổng đơn hàng:
+                                    </div>
+                                    <div class="col text-right pr-3">
+                                        {{ donhang.Total|floatformat:"g" }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col m-0 p-0">
+                                        Giá combo:
+                                    </div>
+                                    <div class="col text-right pr-3">
+                                        {{ donhang.Donhang_Price_Combo|floatformat:"g" }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col m-0 p-0">
+                                        Upsale:
+                                    </div>
+                                    <div class="col text-right pr-3">
+                                        {{ donhang.Donhang_Price_Upsale|floatformat:"g" }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col m-0 p-0">
+                                        Giảm giá:
+                                    </div>
+                                    <div class="col text-right pr-3">
+                                        {{ donhang.Donhang_Price_Discount|floatformat:"g" }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col m-0 p-0">
+                                        Đã thanh toán:
+                                    </div>
+                                    <div class="col text-right pr-3">
+                                        {{ donhang.Donhang_Price_Payment|floatformat:"g" }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col m-0 p-0">
+                                        Cần thanh toán:
+                                    </div>
+                                    <div class="col text-right pr-3">
+                                        {{ donhang.Deft|floatformat:"g" }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{#    a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, a.Deadline, #}
+{#    d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, Customer_Id #}
+{#    a.Donhang_Price_Combo, a.Donhang_Price_Upsale, a.Donhang_Price_Discount,#}
+{#    a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, #}
+{#    a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment as Deft#}
+                    <div class="card shadow mb-2">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Đơn hàng đã thực hiện</h6>
+                        </div>
+                        <div class="card-body">
+                            <ol class="list-unstyled">
+                                <li>Đơn hàng 1</li>
+                                <li>Đơn hàng 1</li>
+                                <li>Đơn hàng 1</li>
+                                <li>Đơn hàng 1</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

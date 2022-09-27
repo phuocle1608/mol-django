@@ -1,0 +1,15 @@
+{% extends 'html/base.html' %}
+
+{% block content %}
+    <h3>Chi tiết đơn hàng</h3>
+
+    <div>Mã đơn hàng: {{ donhang.Donhang_id }}</div>
+    <div>{{ donhang.Donhang_Name }}</div>
+    <div>{{ donhang.Donhang_Require }}</div>
+    <div>{{ donhang.Donhang_Price_Combo }}</div>
+    <div>{{ donhang.Donhang_Price_Discount }}</div>
+    <div>{{ donhang.Donhang_Price_Upsale }}</div>
+    <div>{{ donhang.Donhang_Price_Payment }}</div>
+    <div>{{ donhang.Product_Name111 }}</div>
+
+{% endblock %}

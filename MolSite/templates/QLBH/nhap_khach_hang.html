@@ -1,0 +1,84 @@
+{% extends 'QLBH/base.html' %}
+
+{% block nav_item_nhapkhachhang %}active{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h3 class="h3 font-weight-bold text-primary ml-4">Thêm khách hàng</h3>
+    </div>
+    <!-- <div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="card-body">
+
+    </div>
+    </div> -->
+
+    <div class="card shadow mb-4 col-xl-8 ml-5">
+        <div class="card-body">
+
+            <form action="{% url 'QLBH:nhap_khach_hang' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group row">
+
+                    <div class="col">
+                        <input type="text" class="form-control form-control-custom" id="ordername" name="Customer_Name" placeholder=" " required>
+                        <label>Tên khách hàng</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col">
+                        <select id="inputState" class="form-control form-control-custom" name="Source_Id" required>
+                            <option selected></option>
+                            {% for item in source %}
+                                <option value="{{ item.Source_Id }}">{{ item.Source_Name }}</option>
+                            {% endfor %}
+                        </select>
+                        <label>Nguồn khách hàng</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col">
+                        <input type="text" class="form-control form-control-custom" name="Customer_Facebook" id="Customer_Facebook" placeholder=" ">
+                        <label>Facebook</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col">
+                        <input type="text" class="form-control form-control-custom" name="Customer_ZaloName" id="Customer_ZaloName" placeholder=" ">
+                        <label>Zalo</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col">
+                        <input type="tel" class="form-control form-control-custom" name="Customer_Phone" id="Customer_Phone" pattern="[0-9]{10}" maxlength="10" placeholder=" " required>
+                        <label>Số điện thoại</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col">
+                        <input type="text" class="form-control form-control-custom" name="Customer_Address" id="Customer_Address" placeholder=" ">
+                        <label>Địa chỉ</label>
+                    </div>
+                </div>
+
+                <div class="pb-2 form-group row justify-content-end">
+{#                    <button class="btn btn-danger" type="submit">Delete</button>#}
+                    <button class="btn btn-dark" type="reset">Clear</button>
+{#                    <button class="btn btn-secondary" type="submit">Update</button>#}
+                    <button class="btn btn-primary" type="submit">Insert</button>
+                </div>
+            </form>
+
+
+
+        </div>
+    </div>
+
+{% endblock %}
