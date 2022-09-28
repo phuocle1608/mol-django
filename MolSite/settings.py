@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-4i_5%_ydewfg0l&trc=3zvwqxj%=-w*cg1i9#8^!ojr4ch^kcn
 # SECURITY WARNING: don't run with debug turned on in production!
 # COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
 
-# DEBUG = False
+# DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['mol-django.herokuapp.com', 'localhost', '127.0.0.1', 'remotemysql.com', 'phpmyadmin.net']

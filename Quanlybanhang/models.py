@@ -55,7 +55,7 @@ class Donhang(models.Model):
     Product_Id = models.ForeignKey(Product, on_delete=models.CASCADE, db_column='Product_Id')
     Customer_Id = models.ForeignKey(Customer, on_delete=models.CASCADE, db_column='Customer_Id')
     CreatedDate = models.DateTimeField(default=timezone.now)
-    Deadline = models.DateTimeField()
+    Deadline = models.IntegerField()
     Donhang_Require = models.CharField(max_length=1000)
     Donhang_Price_Combo = models.BigIntegerField()
     Donhang_Price_Discount = models.BigIntegerField()

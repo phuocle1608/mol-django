@@ -67,9 +67,9 @@ class DonhangTonghop(LoginRequiredMixin, View):
         # call danh_sach_don_hang()
         list_donhang = cursorbyname("""
             select 
-                a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, a.Deadline, 
+                a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, DATE_ADD(a.CreatedDate, INTERVAL a.Deadline DAY) as Deadline,
                 d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
-                a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment as Deft, '' as Note        
+                a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment as Deft       
             from Quanlybanhang_donhang a 
                 left join Quanlybanhang_product b on a.Product_Id = b.Product_Id 
                 left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
@@ -96,7 +96,7 @@ class DonhangDetail(LoginRequiredMixin, View):
     def get(self, request, donhang_id):
         list_donhang = models.Donhang.objects.raw("""
             select 
-                a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, a.Deadline, 
+                a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, date_add(a.CreatedDate, INTERVAL a.Deadline DAY) as Deadline, 
                 d.Workingstatus_Name, a.CreatedDate,
                 a.Donhang_Price_Combo, a.Donhang_Price_Upsale, a.Donhang_Price_Discount, b.Product_Name, a.Donhang_Require,
                 a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
@@ -148,7 +148,7 @@ class Updatedonhang(LoginRequiredMixin, View):
             # update_don_hang
             donhang = cursorbyname("""
                 select 
-                    a.*, b.Product_Name, c.Customer_Name, d.Workingstatus_Name, e.Source_Name, c.*, DATE_FORMAT(a.Deadline, "%Y-%m-%dT%H:%i:%s") as Deadline2
+                    a.*, b.Product_Name, d.Workingstatus_Name, e.Source_Name, c.*
                 from Quanlybanhang_donhang a 
                     left join Quanlybanhang_product b on a.Product_Id = b.Product_Id 
                     left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
@@ -189,6 +189,7 @@ class NhapDonHang(LoginRequiredMixin, View):
         customer = models.Customer.objects.all()
         product = models.Product.objects.all()
         working = models.Workingstatus.objects.all()
+        # selected_customer = 0
         return render(request, 'QLBH/nhap_don_hang.html', {'customer': customer, 'product': product, 'working': working})
 
     def post(self, request):
@@ -211,8 +212,8 @@ class NhapDonHang(LoginRequiredMixin, View):
         # print(1 / 0)
         customer = models.Customer.objects.all()
         product = models.Product.objects.all()
-        product = models.Product.objects.all()
-        return render(request, 'QLBH/nhap_don_hang.html', {'customer': customer, 'product': product})
+        working = models.Workingstatus.objects.all()
+        return render(request, 'QLBH/nhap_don_hang.html', {'customer': customer, 'product': product, 'working': working})
 
 class NhapKhachHang(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -230,4 +231,10 @@ class NhapKhachHang(LoginRequiredMixin, View):
             Source_Id = models.Source.objects.get(pk=request.POST['Source_Id']),
         )
         # cus.save()
-        return render(request, 'QLBH/nhap_khach_hang.html', {'source': models.Source.objects.all()})
+        # return render(request, 'QLBH/nhap_khach_hang.html', {'source': models.Source.objects.all()})
+        # print(cus.pk)
+
+        customer = models.Customer.objects.all()
+        product = models.Product.objects.all()
+        working = models.Workingstatus.objects.all()
+        return render(request, 'QLBH/nhap_don_hang.html', {'customer': customer, 'product': product, 'working': working, 'selected_customer': cus.pk})

@@ -139,51 +139,53 @@
                         </div>
                         <div class="card-body">
                             <div class="container-fluid m-0 p-0">
-                                <div class="row">
+                                <div class="row font-weight-normal text-primary">
                                     <div class="col m-0 p-0">
                                         Tổng đơn hàng:
                                     </div>
-                                    <div class="col text-right pr-3">
+                                    <div class="col text-right p-0 pr-2">
                                         {{ donhang.Total|floatformat:"g" }}
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col m-0 p-0">
+                                <div class="row font-weight-light">
+                                    <div class="col m-0 pl-4">
                                         Giá combo:
                                     </div>
-                                    <div class="col text-right pr-3">
+                                    <div class="col text-right pr-2">
                                         {{ donhang.Donhang_Price_Combo|floatformat:"g" }}
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col m-0 p-0">
+                                <div class="row font-weight-light">
+                                    <div class="col m-0 pl-4">
                                         Upsale:
                                     </div>
-                                    <div class="col text-right pr-3">
+                                    <div class="col text-right pr-2">
                                         {{ donhang.Donhang_Price_Upsale|floatformat:"g" }}
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col m-0 p-0">
+                                <div class="row font-weight-light">
+                                    <div class="col m-0 pl-4">
                                         Giảm giá:
                                     </div>
-                                    <div class="col text-right pr-3">
+                                    <div class="col text-right pr-2">
                                         {{ donhang.Donhang_Price_Discount|floatformat:"g" }}
                                     </div>
                                 </div>
-                                <div class="row">
+                                <hr class="sidebar-divider m-2 ">
+                                <div class="row font-weight-normal text-primary">
                                     <div class="col m-0 p-0">
                                         Đã thanh toán:
                                     </div>
-                                    <div class="col text-right pr-3">
+                                    <div class="col text-right pr-2">
                                         {{ donhang.Donhang_Price_Payment|floatformat:"g" }}
                                     </div>
                                 </div>
-                                <div class="row">
+                                <hr class="sidebar-divider m-2">
+                                <div class="row font-weight-normal text-primary">
                                     <div class="col m-0 p-0">
                                         Cần thanh toán:
                                     </div>
-                                    <div class="col text-right pr-3">
+                                    <div class="col text-right pr-2">
                                         {{ donhang.Deft|floatformat:"g" }}
                                     </div>
                                 </div>
@@ -195,19 +197,19 @@
 {#    a.Donhang_Price_Combo, a.Donhang_Price_Upsale, a.Donhang_Price_Discount,#}
 {#    a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, #}
 {#    a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment as Deft#}
-                    <div class="card shadow mb-2">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Đơn hàng đã thực hiện</h6>
-                        </div>
-                        <div class="card-body">
-                            <ol class="list-unstyled">
-                                <li>Đơn hàng 1</li>
-                                <li>Đơn hàng 1</li>
-                                <li>Đơn hàng 1</li>
-                                <li>Đơn hàng 1</li>
-                            </ol>
-                        </div>
-                    </div>
+{#                    <div class="card shadow mb-2">#}
+{#                        <div class="card-header py-3">#}
+{#                            <h6 class="m-0 font-weight-bold text-primary">Đơn hàng đã thực hiện</h6>#}
+{#                        </div>#}
+{#                        <div class="card-body">#}
+{#                            <ol class="list-unstyled">#}
+{#                                <li>Đơn hàng 1</li>#}
+{#                                <li>Đơn hàng 1</li>#}
+{#                                <li>Đơn hàng 1</li>#}
+{#                                <li>Đơn hàng 1</li>#}
+{#                            </ol>#}
+{#                        </div>#}
+{#                    </div>#}
                 </div>
             </div>
         </div>

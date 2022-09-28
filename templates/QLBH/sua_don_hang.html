@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <div class="col-xl-3">
+                    <div class="col-xl-4 col-sm-4 col-lg-4">
                         <select id="Product_Id" class="form-control form-control-custom" name="Product_Id" id="Product_Id" required>
                             <option></option>
                             {% for item in product %}
@@ -87,16 +87,29 @@
                         <label>Gói thiết kế</label>
                     </div>
 
-                    <div class="col-xl-3 offset-xl-2">
-                        <input type="datetime-local" class="form-control form-control-custom" id="Deadline" name="Deadline" value="{{ donhang.Deadline2 }}">
+
+{#                    <div class="col-xl-4 col-sm-4 col-lg-4 offset-2 input-group">#}
+{#                        <input type="number" class="form-control form-control-custom" id="Deadline" name="Deadline" placeholder=" " min="0" required>#}
+{#                        <label>Thời gian thực hiện</label>#}
+{#                        <div class="input-group-append">#}
+{#                            <span class="input-group-text">Ngày</span>#}
+{#                        </div>#}
+{#                    </div>#}
+                    <div class="col-xl-4 col-sm-4 col-lg-4 offset-2 input-group">
+{#                        <input type="datetime-local" class="form-control form-control-custom" id="Deadline" name="Deadline" value="{{ donhang.Deadline2 }}">#}
+{#                        <label>Thời gian thực hiện</label>#}
+                        <input type="number" class="form-control form-control-custom" id="Deadline" name="Deadline" placeholder=" " min="0" value="{{ donhang.Deadline}}" required>
                         <label>Thời gian thực hiện</label>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Ngày</span>
+                        </div>
                     </div>
 
                 </div>
 
                 <div class="form-group row">
                     <!-- <label for="ordername" class="col-sm-2 col-form-label">Giá combo</label> -->
-                    <div class="col-xl-3 input-group">
+                    <div class="col-xl-4 col-sm-4 col-lg-4 input-group">
                         <input type="number" class="form-control form-control-custom" id="Donhang_Price_Combo" name="Donhang_Price_Combo" placeholder=" " value="{{ donhang.Donhang_Price_Combo }}" min="0" required>
                         <label>Giá combo</label>
                         <div class="input-group-append">
@@ -106,7 +119,7 @@
                 </div>
                 <div class="form-group row">
                     <!-- <label for="ordername" class="col-sm-2 col-form-label">Giá combo</label> -->
-                    <div class="col-xl-3 input-group">
+                    <div class="col-xl-4 col-sm-4 col-lg-4 input-group">
                         <input type="number" class="form-control form-control-custom" id="Donhang_Price_Upsale" name="Donhang_Price_Upsale" value="{{ donhang.Donhang_Price_Upsale }}" placeholder=" " min="0" required>
                         <label>Upsale</label>
                         <div class="input-group-append">
@@ -116,7 +129,7 @@
                 </div>
                 <div class="form-group row">
                     <!-- <label for="ordername" class="col-sm-2 col-form-label">Giá combo</label> -->
-                    <div class="col-xl-3 input-group">
+                    <div class="col-xl-4 col-sm-4 col-lg-4 input-group">
                         <input type="number" class="form-control form-control-custom" id="Donhang_Price_Discount" name="Donhang_Price_Discount" value="{{ donhang.Donhang_Price_Discount }}" placeholder=" " min="0" required>
                         <label>Giảm giá</label>
                         <div class="input-group-append">
@@ -127,7 +140,7 @@
 
                 <div class="form-group row">
                     <!-- <label for="ordername" class="col-sm-2 col-form-label">Giá combo</label> -->
-                    <div class="col-xl-3 input-group">
+                    <div class="col-xl-4 col-sm-4 col-lg-4 input-group">
                         <input type="number" class="form-control form-control-custom" id="Donhang_Price_Payment" name="Donhang_Price_Payment" value="{{ donhang.Donhang_Price_Payment }}" placeholder=" " min="0" required>
                         <label>Đã thanh toán</label>
                         <div class="input-group-append">
