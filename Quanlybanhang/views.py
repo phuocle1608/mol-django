@@ -69,7 +69,11 @@ class DonhangTonghop(LoginRequiredMixin, View):
             select 
                 a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, DATE_ADD(a.CreatedDate, INTERVAL a.Deadline DAY) as Deadline,
                 d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
-                a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment as Deft       
+                a.Donhang_Price_Payment, 
+                case 
+                    when a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
+                    else 0 
+                end as Deft       
             from Quanlybanhang_donhang a 
                 left join Quanlybanhang_product b on a.Product_Id = b.Product_Id 
                 left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
@@ -100,7 +104,10 @@ class DonhangDetail(LoginRequiredMixin, View):
                 d.Workingstatus_Name, a.CreatedDate,
                 a.Donhang_Price_Combo, a.Donhang_Price_Upsale, a.Donhang_Price_Discount, b.Product_Name, a.Donhang_Require,
                 a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
-                a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment as Deft, c.*, e.Source_Name
+                case 
+                    when a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
+                    else 0 
+                end as Deft, c.*, e.Source_Name
             from Quanlybanhang_donhang a 
                 left join Quanlybanhang_product b on a.Product_Id = b.Product_Id 
                 left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
@@ -129,7 +136,11 @@ class Test(View):
             select
                 a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, a.Deadline,
                 d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, b.Product_Name,
-                a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment as Deft, '' as Note
+                a.Donhang_Price_Payment, 
+                case 
+                    when a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
+                    else 0 
+                end as Deft, '' as Note
             from Quanlybanhang_donhang a
                 left join Quanlybanhang_product b on a.Product_Id = b.Product_Id
                 left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
