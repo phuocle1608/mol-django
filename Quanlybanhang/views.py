@@ -71,7 +71,7 @@ class DonhangTonghop(LoginRequiredMixin, View):
                 d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
                 a.Donhang_Price_Payment, 
                 case 
-                    when a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
+                    when a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
                     else 0 
                 end as Deft       
             from Quanlybanhang_donhang a 
@@ -105,7 +105,7 @@ class DonhangDetail(LoginRequiredMixin, View):
                 a.Donhang_Price_Combo, a.Donhang_Price_Upsale, a.Donhang_Price_Discount, b.Product_Name, a.Donhang_Require,
                 a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
                 case 
-                    when a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
+                    when a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
                     else 0 
                 end as Deft, c.*, e.Source_Name
             from Quanlybanhang_donhang a 
@@ -128,26 +128,6 @@ class DonhangDetail(LoginRequiredMixin, View):
             return self.get(request, donhang_id)
         elif request.POST['button'] == 'delete':
             return redirect('/donhang/')
-
-
-class Test(View):
-    def get(self, request):
-        list_donhang = models.Donhang.objects.raw("""
-            select
-                a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, a.Deadline,
-                d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, b.Product_Name,
-                a.Donhang_Price_Payment, 
-                case 
-                    when a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
-                    else 0 
-                end as Deft, '' as Note
-            from Quanlybanhang_donhang a
-                left join Quanlybanhang_product b on a.Product_Id = b.Product_Id
-                left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
-                left join Quanlybanhang_workingstatus d on d.Workingstatus_Id = a.Workingstatus_Id
-            """)
-
-        return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang': list_donhang})
 
 class Updatedonhang(LoginRequiredMixin, View):
     login_url = '/login/'
