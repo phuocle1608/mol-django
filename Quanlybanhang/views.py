@@ -79,6 +79,7 @@ class DonhangTonghop(LoginRequiredMixin, View):
                 left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
                 left join Quanlybanhang_workingstatus d on d.Workingstatus_Id = a.Workingstatus_Id
             where a.IsDelete = 0
+            order by a.Donhang_Id desc
         """)
         return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang': list_donhang})
 
