@@ -91,6 +91,14 @@
                 <div class="form-group row">
                     <!-- <label for="ordername" class="col-sm-2 col-form-label">Giá combo</label> -->
                     <div class="col-xl-4 col-sm-4 col-lg-4 input-group">
+                        <input type="datetime-local" class="form-control form-control-custom" id="CreatedDate" name="CreatedDate" required>
+                        <label>Ngày chốt đơn</label>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <!-- <label for="ordername" class="col-sm-2 col-form-label">Giá combo</label> -->
+                    <div class="col-xl-4 col-sm-4 col-lg-4 input-group">
                         <input type="number" class="form-control form-control-custom" id="Donhang_Price_Combo" name="Donhang_Price_Combo" placeholder=" " min="0" required>
                         <label>Giá combo</label>
                         <div class="input-group-append">
@@ -142,9 +150,12 @@
                 <div class="form-group row">
                     <div class="col">
                         <select id="Customer_Id" class="form-control form-control-custom" name="Working_Status" id="Working_Status" required>
-                            <option selected></option>
                             {% for item in working %}
-                                <option value="{{ item.Workingstatus_Id }}"> {{ item.Workingstatus_Name }}</option>
+                                {% if  item.Workingstatus_Id == 1 %}
+                                    <option value="{{ item.Workingstatus_Id }}" selected> {{ item.Workingstatus_Name }}</option>
+                                {% else %}
+                                    <option value="{{ item.Workingstatus_Id }}"> {{ item.Workingstatus_Name }}</option>
+                                {% endif %}
                             {% endfor %}
                         </select>
                         <label>Tiến độ thực hiện</label>
@@ -164,6 +175,14 @@
 
         </div>
     </div>
+    {% block jsscript %}
+        <script>
+{#CreatedDate#}
+            let now = new Date();
+            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+            document.getElementById('CreatedDate').value = now.toISOString().slice(0,16);
 
+        </script>
+    {% endblock %}
 
 {% endblock %}

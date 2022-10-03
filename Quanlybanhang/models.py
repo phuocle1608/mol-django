@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import datetime
 
 # Create your models here.
 class Source(models.Model):
@@ -54,7 +55,8 @@ class Donhang(models.Model):
     WorkingStatus_Id = models.ForeignKey(Workingstatus, on_delete=models.CASCADE, db_column='Workingstatus_Id')
     Product_Id = models.ForeignKey(Product, on_delete=models.CASCADE, db_column='Product_Id')
     Customer_Id = models.ForeignKey(Customer, on_delete=models.CASCADE, db_column='Customer_Id')
-    CreatedDate = models.DateTimeField(default=timezone.now)
+    CreatedDate = models.DateTimeField(default=datetime.datetime.now())
+    CreatedDateOrigin = models.DateTimeField(default=datetime.datetime.now())
     Deadline = models.IntegerField()
     Donhang_Require = models.CharField(max_length=1000)
     Donhang_Price_Combo = models.BigIntegerField()

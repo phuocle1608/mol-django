@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+import datetime
 # Create your views here.
 
 
@@ -224,13 +224,15 @@ class NhapDonHang(LoginRequiredMixin, View):
 
     def post(self, request):
         # print(1/0)
+        # return HttpResponse(request.POST['CreatedDate'])
         donhang = models.Donhang.objects.create(
             Donhang_Name=request.POST['Donhang_Name'],
             FlashDesign_Flag = request.POST['FlashDesign_Flag'], #1 if request.POST['FlashDesign_Flag'] == 'on' else 0,
             WorkingStatus_Id = models.Workingstatus.objects.get(pk=1),
             Product_Id = models.Product.objects.get(pk=request.POST['Product_Id']),
             Customer_Id = models.Customer.objects.get(pk=request.POST['Customer_Id']),
-            CreatedDate = timezone.now(),
+            CreatedDateOrigin = datetime.datetime.now(),
+            CreatedDate = request.POST['CreatedDate'],
             Deadline = request.POST['Deadline'],
             Donhang_Require = request.POST['Donhang_Require'],
             Donhang_Price_Combo = request.POST['Donhang_Price_Combo'],
