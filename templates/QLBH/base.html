@@ -279,6 +279,8 @@
       </div>
    </div>
 
+
+
    <!-- Bootstrap core JavaScript-->
    <script src="{% static 'QLBH/vendor/jquery/jquery.min.js' %}"></script>
    <script src="{% static 'QLBH/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -295,6 +297,11 @@
 
    <!-- Page level custom scripts -->
    <script src="{% static 'QLBH/js/demo/datatables-demo.js' %}"></script>
+
+   {% block jsscript %}
+
+    {% endblock %}
+
 
 </body>
 

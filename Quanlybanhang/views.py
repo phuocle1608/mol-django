@@ -78,10 +78,48 @@ class DonhangTonghop(LoginRequiredMixin, View):
                 left join Quanlybanhang_product b on a.Product_Id = b.Product_Id 
                 left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
                 left join Quanlybanhang_workingstatus d on d.Workingstatus_Id = a.Workingstatus_Id
-            where a.IsDelete = 0
+            where a.IsDelete = 0 and YEAR(a.CreatedDate)=YEAR(CURDATE()) and MONTH(a.CreatedDate)=MONTH(CURDATE())
             order by a.Donhang_Id desc
         """)
-        return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang': list_donhang})
+        return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang': list_donhang, 'filteroption': 'Tháng này'})
+    def post(self, request):
+        if request.POST['inputState'] == 'Tháng này':
+            add_to_sql = "and YEAR(a.CreatedDate)=YEAR(CURDATE()) and MONTH(a.CreatedDate)=MONTH(CURDATE())"
+        elif request.POST['inputState'] == 'Tiếp nhận đơn':
+            add_to_sql = "and a.Workingstatus_Id=1"
+        elif request.POST['inputState'] == 'Đang thực hiện':
+            add_to_sql = "and a.Workingstatus_Id in (2, 3, 4, 5)"
+        elif request.POST['inputState'] == 'Upsale':
+            add_to_sql = "and a.Workingstatus_Id in (6, 7)"
+        elif request.POST['inputState'] == 'Chưa thanh toán':
+            add_to_sql = """ and 
+                case 
+                    when a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
+                    else 0 
+                end > 0
+            """
+        elif request.POST['inputState'] == 'Tất cả đơn':
+            add_to_sql = ""
+
+        list_donhang = cursorbyname("""
+                    select 
+                        a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, DATE_ADD(a.CreatedDate, INTERVAL a.Deadline DAY) as Deadline,
+                        d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
+                        a.Donhang_Price_Payment, 
+                        case 
+                            when a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
+                            else 0 
+                        end as Deft       
+                    from Quanlybanhang_donhang a 
+                        left join Quanlybanhang_product b on a.Product_Id = b.Product_Id 
+                        left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
+                        left join Quanlybanhang_workingstatus d on d.Workingstatus_Id = a.Workingstatus_Id
+                    where a.IsDelete = 0 {}
+                    order by a.Donhang_Id desc
+                """.format(add_to_sql))
+        return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang': list_donhang, 'filteroption': request.POST['inputState']})
+
+
 
 # <th>Mã đơn</th>
 # <th>Tên logo</th>

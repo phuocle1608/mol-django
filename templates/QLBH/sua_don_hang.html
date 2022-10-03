@@ -1,7 +1,7 @@
 {% extends 'QLBH/base.html' %}
 
 {% block title %}
-    <title>Đơn hàng {{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }}</title>
+    <title>Đơn hàng #{{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }}</title>
 {% endblock %}
 
 {% block content %}
@@ -12,7 +12,7 @@
 
 
        <!-- Page Heading -->
-       <h3 class="h3 font-weight-bold text-primary ml-4">Đơn hàng {{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }}</h3>
+       <h3 class="h3 font-weight-bold text-primary ml-4">Đơn hàng #{{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }}</h3>
     </div>
     <!-- <div class="card shadow mb-4">
         <div class="card-header py-3">

@@ -56,6 +56,8 @@
 		factory( jQuery, window, document );
 	}
 }
+
+
 (function( $, window, document, undefined ) {
 	"use strict";
 
@@ -989,6 +991,7 @@
 				"bPaginate",
 				"bLengthChange",
 				"bFilter",
+				// "order",
 				"bSort",
 				"bSortMulti",
 				"bInfo",
@@ -1004,6 +1007,7 @@
 				"fnServerData",
 				"fnFormatNumber",
 				"sServerMethod",
+				// "order",
 				"aaSorting",
 				"aaSortingFixed",
 				"aLengthMenu",
@@ -2170,7 +2174,7 @@
 			null;
 	}
 	
-	
+
 	/**
 	 * Covert the index of an index in the data array and convert it to the visible
 	 *   column index (take account of hidden columns)
@@ -9964,7 +9968,7 @@
 		 * should contain an array for each column to be sorted initially containing
 		 * the column's index and a direction string ('asc' or 'desc').
 		 *  @type array
-		 *  @default [[0,'asc']]
+		 *  @default []
 		 *
 		 *  @dtopt Option
 		 *  @name DataTable.defaults.order
@@ -9984,9 +9988,9 @@
 		 *      } );
 		 *    } );
 		 */
-		"aaSorting": [[0,'asc']],
-	
-	
+		"aaSorting": [], //#[0,'asc']
+		// "order": [],
+
 		/**
 		 * This parameter is basically identical to the `sorting` parameter, but
 		 * cannot be overridden by user interaction with the table. What this means
@@ -12147,7 +12151,7 @@
 		 *      } );
 		 *    } );
 		 */
-		"asSorting": [ 'asc', 'desc' ],
+		"asSorting": [], // 'asc', 'desc'
 	
 	
 		/**
@@ -13269,8 +13273,8 @@
 		 *  @type array
 		 *  @todo These inner arrays should really be objects
 		 */
-		"aaSorting": null,
-	
+		"aaSorting": [],
+		// "order": [],
 		/**
 		 * Sorting that is always applied to the table (i.e. prefixed in front of
 		 * aaSorting).
