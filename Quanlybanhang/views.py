@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 import datetime
+import pytz
 # Create your views here.
 
 
@@ -231,7 +232,7 @@ class NhapDonHang(LoginRequiredMixin, View):
             WorkingStatus_Id = models.Workingstatus.objects.get(pk=1),
             Product_Id = models.Product.objects.get(pk=request.POST['Product_Id']),
             Customer_Id = models.Customer.objects.get(pk=request.POST['Customer_Id']),
-            CreatedDateOrigin = datetime.datetime.now(),
+            CreatedDateOrigin = self.func_convert_local_time(datetime.datetime.utcnow()), # adjust 12h because of local timezone in heroku
             CreatedDate = request.POST['CreatedDate'],
             Deadline = request.POST['Deadline'],
             Donhang_Require = request.POST['Donhang_Require'],
@@ -246,6 +247,12 @@ class NhapDonHang(LoginRequiredMixin, View):
         product = models.Product.objects.all()
         working = models.Workingstatus.objects.all()
         return render(request, 'QLBH/nhap_don_hang.html', {'customer': customer, 'product': product, 'working': working})
+
+    def func_convert_local_time(self, xdate):
+        mytimezone = pytz.timezone("Etc/GMT")
+        dtobj4 = mytimezone.localize(dtobj2)
+        dt_final = dtobj4.astimezone(pytz.timezone("Etc/GMT-7"))
+        return dt_final
 
 class NhapKhachHang(LoginRequiredMixin, View):
     login_url = '/login/'
