@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+User = get_user_model()
 import datetime
 
 # Create your models here.
@@ -55,8 +57,8 @@ class Donhang(models.Model):
     WorkingStatus_Id = models.ForeignKey(Workingstatus, on_delete=models.CASCADE, db_column='Workingstatus_Id')
     Product_Id = models.ForeignKey(Product, on_delete=models.CASCADE, db_column='Product_Id')
     Customer_Id = models.ForeignKey(Customer, on_delete=models.CASCADE, db_column='Customer_Id')
-    CreatedDate = models.DateTimeField(default=datetime.datetime.now())
-    CreatedDateOrigin = models.DateTimeField(default=datetime.datetime.now())
+    CreatedDate = models.DateTimeField(default=timezone.now())
+    CreatedDateOrigin = models.DateTimeField(default=timezone.now())
     Deadline = models.IntegerField()
     Donhang_Require = models.CharField(max_length=1000)
     Donhang_Price_Combo = models.BigIntegerField()
@@ -64,6 +66,9 @@ class Donhang(models.Model):
     Donhang_Price_Upsale = models.BigIntegerField()
     Donhang_Price_Payment = models.BigIntegerField()
     IsDelete = models.IntegerField(default=0)
+    LastUpdate = models.DateTimeField(default=timezone.now())
+    Username = models.ForeignKey(User, on_delete=models.CASCADE, db_column='User')
+
     # PaymentStatus_Id = models.ForeignKey(Paymentstatus, on_delete=models.CASCADE, db_column='Paymentstatus_Id')
 
     def __str__(self):

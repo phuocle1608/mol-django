@@ -18,7 +18,14 @@ connection.force_debug_cursor = True
 def handle_not_found(request, exception):
     return render(request, 'QLBH/404.html')
 
-
+def func_convert_local_time(xdate):
+    try:
+        mytimezone = pytz.timezone("Etc/GMT")
+        dtobj4 = mytimezone.localize(xdate)
+        dt_final = dtobj4.astimezone(pytz.timezone("Etc/GMT-7"))
+        return dt_final.replace(tzinfo=None)
+    except Exception as e:
+        return str(e)
 
 def cursorbyname(rawsql):
     cursor = connection.cursor()
@@ -207,6 +214,8 @@ class Updatedonhang(LoginRequiredMixin, View):
                 Donhang_Price_Discount=request.POST['Donhang_Price_Discount'],
                 Donhang_Price_Upsale=request.POST['Donhang_Price_Upsale'],
                 Donhang_Price_Payment=request.POST['Donhang_Price_Payment'],
+                LastUpdate=func_convert_local_time(datetime.datetime.utcnow()),
+                Username=request.user
             )
             return redirect('../../donhang/{}/'.format(donhang_id), )
 
@@ -219,6 +228,8 @@ class Updatedonhang(LoginRequiredMixin, View):
 class NhapDonHang(LoginRequiredMixin, View):
     login_url = '/login/'
     def get(self, request):
+        if request.user.is_authenticated:
+            return HttpResponse(request.user)
         customer = models.Customer.objects.all()
         product = models.Product.objects.all()
         working = models.Workingstatus.objects.all()
@@ -234,7 +245,7 @@ class NhapDonHang(LoginRequiredMixin, View):
             WorkingStatus_Id = models.Workingstatus.objects.get(pk=1),
             Product_Id = models.Product.objects.get(pk=request.POST['Product_Id']),
             Customer_Id = models.Customer.objects.get(pk=request.POST['Customer_Id']),
-            CreatedDateOrigin = self.func_convert_local_time(datetime.datetime.utcnow()), # adjust 12h because of local timezone in heroku
+            CreatedDateOrigin = func_convert_local_time(datetime.datetime.utcnow()), # adjust 12h because of local timezone in heroku
             CreatedDate = request.POST['CreatedDate'],
             Deadline = request.POST['Deadline'],
             Donhang_Require = request.POST['Donhang_Require'],
@@ -242,6 +253,8 @@ class NhapDonHang(LoginRequiredMixin, View):
             Donhang_Price_Discount = request.POST['Donhang_Price_Discount'],
             Donhang_Price_Upsale = request.POST['Donhang_Price_Upsale'],
             Donhang_Price_Payment = request.POST['Donhang_Price_Payment'],
+            LastUpdate = func_convert_local_time(datetime.datetime.utcnow()),
+            Username = request.user
             # PaymentStatus_Id = models.Paymentstatus.objects.get(pk=1),
         )
         # print(1 / 0)
@@ -250,14 +263,6 @@ class NhapDonHang(LoginRequiredMixin, View):
         working = models.Workingstatus.objects.all()
         return render(request, 'QLBH/nhap_don_hang.html', {'customer': customer, 'product': product, 'working': working})
 
-    def func_convert_local_time(self, xdate):
-        try:
-            mytimezone = pytz.timezone("Etc/GMT")
-            dtobj4 = mytimezone.localize(xdate)
-            dt_final = dtobj4.astimezone(pytz.timezone("Etc/GMT-7"))
-            return dt_final.replace(tzinfo=None)
-        except Exception as e:
-            return str(e)
 
 class NhapKhachHang(LoginRequiredMixin, View):
     login_url = '/login/'
