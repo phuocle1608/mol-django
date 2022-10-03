@@ -18,6 +18,8 @@ connection.force_debug_cursor = True
 def handle_not_found(request, exception):
     return render(request, 'QLBH/404.html')
 
+
+
 def cursorbyname(rawsql):
     cursor = connection.cursor()
     cursor.execute(rawsql)
@@ -225,7 +227,7 @@ class NhapDonHang(LoginRequiredMixin, View):
 
     def post(self, request):
         # print(1/0)
-        # return HttpResponse(request.POST['CreatedDate'])
+        # return HttpResponse(self.func_convert_local_time(datetime.datetime.utcnow()))
         donhang = models.Donhang.objects.create(
             Donhang_Name=request.POST['Donhang_Name'],
             FlashDesign_Flag = request.POST['FlashDesign_Flag'], #1 if request.POST['FlashDesign_Flag'] == 'on' else 0,
@@ -249,10 +251,13 @@ class NhapDonHang(LoginRequiredMixin, View):
         return render(request, 'QLBH/nhap_don_hang.html', {'customer': customer, 'product': product, 'working': working})
 
     def func_convert_local_time(self, xdate):
-        mytimezone = pytz.timezone("Etc/GMT")
-        dtobj4 = mytimezone.localize(dtobj2)
-        dt_final = dtobj4.astimezone(pytz.timezone("Etc/GMT-7"))
-        return dt_final
+        try:
+            mytimezone = pytz.timezone("Etc/GMT")
+            dtobj4 = mytimezone.localize(xdate)
+            dt_final = dtobj4.astimezone(pytz.timezone("Etc/GMT-7"))
+            return dt_final.replace(tzinfo=None)
+        except Exception as e:
+            return str(e)
 
 class NhapKhachHang(LoginRequiredMixin, View):
     login_url = '/login/'
