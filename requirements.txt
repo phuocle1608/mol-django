@@ -2,3 +2,4 @@ django
 PyMySQL
 gunicorn
 django-heroku
+pytz
