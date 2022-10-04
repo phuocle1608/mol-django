@@ -2,18 +2,16 @@
 {% load static %}
 
 {% block title %}
-    <title>Đơn hàng #{{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }}</title>
+    <title>Dashboard</title>
 {% endblock %}
-{% block subtitle %}
-    <div class="h3 ml-5 mt-3 custom-text-title d-inline-flex">#{{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }} <a href="{% url 'QLBH:sua_don_hang' donhang.Donhang_Id %}"><img src="{% static 'QLBH\img\edit.png' %}" width="22px"></a></div>
-{% endblock %}
+
 {% block content %}
     <div class="container-fluid">
 
 
 
         <!-- Page Heading -->
-{#        <h3 class="h3 font-weight-bold text-primary ml-4">#{{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }} <sup><a href="{% url 'QLBH:sua_don_hang' donhang.Donhang_Id %}"><img src="{% static 'QLBH\img\edit.png' %}" width="20px"></a></sup></h3>#}
+        <h3 class="h3 font-weight-bold text-primary ml-4">#{{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }} <sup><a href="{% url 'QLBH:sua_don_hang' donhang.Donhang_Id %}"><img src="{% static 'QLBH\img\edit.png' %}" width="20px"></a></sup></h3>
         
 
         <div class="container-fluid mt-4">

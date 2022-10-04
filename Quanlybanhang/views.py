@@ -79,7 +79,7 @@ class DonhangTonghop(LoginRequiredMixin, View):
             select 
                 a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, DATE_ADD(a.CreatedDate, INTERVAL a.Deadline DAY) as Deadline,
                 d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
-                a.Donhang_Price_Payment, 
+                a.Donhang_Price_Payment, a.Workingstatus_Id, b.Product_Name,
                 case 
                     when a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
                     else 0 
@@ -91,31 +91,38 @@ class DonhangTonghop(LoginRequiredMixin, View):
             where a.IsDelete = 0 and YEAR(a.CreatedDate)=YEAR(CURDATE()) and MONTH(a.CreatedDate)=MONTH(CURDATE())
             order by a.Donhang_Id desc
         """)
-        return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang': list_donhang, 'filteroption': 'Tháng này'})
+
+        list_working = cursorbyname("""
+            select *     
+            from Quanlybanhang_workingstatus 
+            order by Workingstatus_Id asc
+        """)
+
+        list_donhang_final = {
+            'all': list_donhang
+        }
+        # by working status
+        for item in list_working:
+            list_donhang_final['working-{}'.format(item['Workingstatus_Id'])] = list(filter(lambda x: x['Workingstatus_Id'] == item['Workingstatus_Id'], list_donhang))
+
+        # chua thanh toan
+        list_donhang_final['notpayment'] = list(filter(lambda x: x['Deft'] > 0, list_donhang))
+
+        return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang_final': list_donhang_final, 'filteroption': 'thismonth', 'list_working': list_working})
     def post(self, request):
-        if request.POST['inputState'] == 'Tháng này':
+        # return HttpResponse(request.POST['inputState'])
+        if request.POST['inputState'] == 'thismonth':
             add_to_sql = "and YEAR(a.CreatedDate)=YEAR(CURDATE()) and MONTH(a.CreatedDate)=MONTH(CURDATE())"
-        elif request.POST['inputState'] == 'Tiếp nhận đơn':
-            add_to_sql = "and a.Workingstatus_Id=1"
-        elif request.POST['inputState'] == 'Đang thực hiện':
-            add_to_sql = "and a.Workingstatus_Id in (2, 3, 4, 5)"
-        elif request.POST['inputState'] == 'Upsale':
-            add_to_sql = "and a.Workingstatus_Id in (6, 7)"
-        elif request.POST['inputState'] == 'Chưa thanh toán':
-            add_to_sql = """ and 
-                case 
-                    when a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
-                    else 0 
-                end > 0
-            """
-        elif request.POST['inputState'] == 'Tất cả đơn':
+        elif request.POST['inputState'] == 'last30day':
+            add_to_sql = "and a.CreatedDate > DATE_ADD(curdate(), INTERVAL -30 DAY)"
+        elif request.POST['inputState'] == 'all':
             add_to_sql = ""
 
         list_donhang = cursorbyname("""
                     select 
                         a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, DATE_ADD(a.CreatedDate, INTERVAL a.Deadline DAY) as Deadline,
                         d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
-                        a.Donhang_Price_Payment, 
+                        a.Donhang_Price_Payment, a.Workingstatus_Id, b.Product_Name,
                         case 
                             when a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
                             else 0 
@@ -127,7 +134,25 @@ class DonhangTonghop(LoginRequiredMixin, View):
                     where a.IsDelete = 0 {}
                     order by a.Donhang_Id desc
                 """.format(add_to_sql))
-        return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang': list_donhang, 'filteroption': request.POST['inputState']})
+
+        list_working = cursorbyname("""
+                    select *     
+                    from Quanlybanhang_workingstatus 
+                    order by Workingstatus_Id asc
+                """)
+
+        list_donhang_final = {
+            'all': list_donhang
+        }
+        # by working status
+        for item in list_working:
+            list_donhang_final['working-{}'.format(item['Workingstatus_Id'])] = list(filter(lambda x: x['Workingstatus_Id'] == item['Workingstatus_Id'], list_donhang))
+
+        # chua thanh toan
+        list_donhang_final['notpayment'] = list(filter(lambda x: x['Deft'] > 0, list_donhang))
+
+        return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang_final': list_donhang_final, 'filteroption': request.POST['inputState'], 'list_working': list_working})
+        # return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang': list_donhang, 'filteroption': request.POST['inputState']})
 
 
 
@@ -228,8 +253,6 @@ class Updatedonhang(LoginRequiredMixin, View):
 class NhapDonHang(LoginRequiredMixin, View):
     login_url = '/login/'
     def get(self, request):
-        if request.user.is_authenticated:
-            return HttpResponse(request.user)
         customer = models.Customer.objects.all()
         product = models.Product.objects.all()
         working = models.Workingstatus.objects.all()
