@@ -68,6 +68,12 @@ class Donhang(models.Model):
     IsDelete = models.IntegerField(default=0)
     LastUpdate = models.DateTimeField(default=timezone.now())
     Username = models.ForeignKey(User, on_delete=models.CASCADE, db_column='User')
+    Image1 = models.CharField(max_length=1000,null=True)
+    Image2 = models.CharField(max_length=1000, null=True)
+    Image3 = models.CharField(max_length=1000, null=True)
+    Image4 = models.CharField(max_length=1000, null=True)
+    Image5 = models.CharField(max_length=1000, null=True)
+    Image6 = models.CharField(max_length=1000, null=True)
 
     # PaymentStatus_Id = models.ForeignKey(Paymentstatus, on_delete=models.CASCADE, db_column='Paymentstatus_Id')
 

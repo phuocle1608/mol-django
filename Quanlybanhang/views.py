@@ -175,7 +175,7 @@ class DonhangDetail(LoginRequiredMixin, View):
         list_donhang = models.Donhang.objects.raw("""
             select 
                 a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, date_add(a.CreatedDate, INTERVAL a.Deadline DAY) as Deadline, 
-                d.Workingstatus_Name, a.CreatedDate,
+                d.Workingstatus_Name, a.CreatedDate, a.Image1, a.Image2, a.Image3, a.Image4, a.Image5, a.Image6,
                 a.Donhang_Price_Combo, a.Donhang_Price_Upsale, a.Donhang_Price_Discount, b.Product_Name, a.Donhang_Require,
                 a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
                 case 
@@ -240,7 +240,13 @@ class Updatedonhang(LoginRequiredMixin, View):
                 Donhang_Price_Upsale=request.POST['Donhang_Price_Upsale'],
                 Donhang_Price_Payment=request.POST['Donhang_Price_Payment'],
                 LastUpdate=func_convert_local_time(datetime.datetime.utcnow()),
-                Username=request.user
+                Username=request.user,
+                Image1=request.POST['Image1'],
+                Image2=request.POST['Image2'],
+                Image3=request.POST['Image3'],
+                Image4=request.POST['Image4'],
+                Image5=request.POST['Image5'],
+                Image6=request.POST['Image6'],
             )
             return redirect('../../donhang/{}/'.format(donhang_id), )
 
@@ -253,7 +259,7 @@ class Updatedonhang(LoginRequiredMixin, View):
 class NhapDonHang(LoginRequiredMixin, View):
     login_url = '/login/'
     def get(self, request):
-        customer = models.Customer.objects.all()
+        customer = models.Customer.objects.all().order_by('-Customer_Id')
         product = models.Product.objects.all()
         working = models.Workingstatus.objects.all()
         # selected_customer = 0
@@ -277,11 +283,18 @@ class NhapDonHang(LoginRequiredMixin, View):
             Donhang_Price_Upsale = request.POST['Donhang_Price_Upsale'],
             Donhang_Price_Payment = request.POST['Donhang_Price_Payment'],
             LastUpdate = func_convert_local_time(datetime.datetime.utcnow()),
-            Username = request.user
+            Username = request.user,
+            Image1 = request.POST['Image1'],
+            Image2=request.POST['Image2'],
+            Image3=request.POST['Image3'],
+            Image4=request.POST['Image4'],
+            Image5=request.POST['Image5'],
+            Image6=request.POST['Image6'],
+
             # PaymentStatus_Id = models.Paymentstatus.objects.get(pk=1),
         )
         # print(1 / 0)
-        customer = models.Customer.objects.all()
+        customer = models.Customer.objects.all().order_by('-Customer_Id')
         product = models.Product.objects.all()
         working = models.Workingstatus.objects.all()
         return render(request, 'QLBH/nhap_don_hang.html', {'customer': customer, 'product': product, 'working': working})
