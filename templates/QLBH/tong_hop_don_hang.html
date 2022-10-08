@@ -78,6 +78,10 @@
                                     </li>
                                 {% endfor %}
                                 <li class="nav-item">
+                                    <a class="nav-link nav-link-custom" id="close_deadline-tab" data-toggle="tab" href="#close_deadline" role="tab"
+                                        aria-controls="close_deadline" aria-selected="false">Deadline<span class="custom-tab-label ml-2 font-weight-lighter"></span></a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link nav-link-custom" id="notpayment-tab" data-toggle="tab" href="#notpayment" role="tab"
                                         aria-controls="notpayment" aria-selected="false">Chưa thanh toán<span class="custom-tab-label ml-2 font-weight-lighter"></span></a>
                                 </li>
@@ -136,7 +140,7 @@
                                              <th class="col-sm-1">Tiến độ thực hiện</th>
                                              <th class="col-sm-1">Ngày tạo đơn</th>
                                              <th class="col-sm-1">Tên khách hàng</th>
-                                             <th class="col-sm-1">Số điện thoại</th>
+                                             <th class="col-sm-1">Nguồn</th>
                                              <th class="col-sm-1">Tổng giá trị</th>
                                              <th class="col-sm-1">Đã thanh toán</th>
                                              <th class="col-sm-1">Chưa thanh toán</th>
@@ -173,7 +177,7 @@
                                                         <td>{{ item.Workingstatus_Name }}</td>
                                                         <td>{{ item.CreatedDate|date:"d-m-Y"}}</td>
                                                         <td><a href="#">{{ item.Customer_Name }}</a></td>
-                                                        <td>{{ item.Customer_Phone }}</td>
+                                                        <td>{{ item.Source_Name }}</td>
                                                         <td class="text-right pr-2">{{ item.Total |floatformat:"g"}}</td>
                                                         <td class="text-right mr-sm-2">{{ item.Donhang_Price_Payment|floatformat:"g"}}</td>
                                                         <td class="text-right mr-sm-2">{{ item.Deft |floatformat:"g"}}</td>

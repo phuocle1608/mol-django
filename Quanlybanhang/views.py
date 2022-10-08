@@ -79,16 +79,22 @@ class DonhangTonghop(LoginRequiredMixin, View):
             select 
                 a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, DATE_ADD(a.CreatedDate, INTERVAL a.Deadline DAY) as Deadline,
                 d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
-                a.Donhang_Price_Payment, a.Workingstatus_Id, b.Product_Name,
+                a.Donhang_Price_Payment, a.Workingstatus_Id, b.Product_Name, e.Source_Name,
                 case 
                     when a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
                     else 0 
-                end as Deft       
+                end as Deft,
+                case
+                    when a.Workingstatus_Id = 8 then -999
+                    else
+                        datediff(CURDATE(), DATE_ADD(CreatedDate, INTERVAL Deadline DAY))
+                end as DeadlineList                       
             from Quanlybanhang_donhang a 
                 left join Quanlybanhang_product b on a.Product_Id = b.Product_Id 
                 left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
                 left join Quanlybanhang_workingstatus d on d.Workingstatus_Id = a.Workingstatus_Id
-            where a.IsDelete = 0 and YEAR(a.CreatedDate)=YEAR(CURDATE()) and MONTH(a.CreatedDate)=MONTH(CURDATE())
+                left join Quanlybanhang_source e on e.Source_Id = c.Source_Id
+            where a.IsDelete = 0 and a.CreatedDate > DATE_ADD(curdate(), INTERVAL -30 DAY)
             order by a.Donhang_Id desc
         """)
 
@@ -105,10 +111,13 @@ class DonhangTonghop(LoginRequiredMixin, View):
         for item in list_working:
             list_donhang_final['working-{}'.format(item['Workingstatus_Id'])] = list(filter(lambda x: x['Workingstatus_Id'] == item['Workingstatus_Id'], list_donhang))
 
+        # close deadline
+        list_donhang_final['close_deadline'] = list(filter(lambda x: x['DeadlineList'] >= -1, list_donhang))
+
         # chua thanh toan
         list_donhang_final['notpayment'] = list(filter(lambda x: x['Deft'] > 0, list_donhang))
 
-        return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang_final': list_donhang_final, 'filteroption': 'thismonth', 'list_working': list_working})
+        return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang_final': list_donhang_final, 'filteroption': 'last30day', 'list_working': list_working})
     def post(self, request):
         # return HttpResponse(request.POST['inputState'])
         if request.POST['inputState'] == 'thismonth':
@@ -122,15 +131,21 @@ class DonhangTonghop(LoginRequiredMixin, View):
                     select 
                         a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, DATE_ADD(a.CreatedDate, INTERVAL a.Deadline DAY) as Deadline,
                         d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, 
-                        a.Donhang_Price_Payment, a.Workingstatus_Id, b.Product_Name,
+                        a.Donhang_Price_Payment, a.Workingstatus_Id, b.Product_Name, e.Source_Name,
                         case 
                             when a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment > 0 then a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment
                             else 0 
-                        end as Deft       
+                        end as Deft,
+                        case
+                            when a.Workingstatus_Id = 8 then -999
+                            else
+                                datediff(CURDATE(), DATE_ADD(CreatedDate, INTERVAL Deadline DAY))
+                        end as DeadlineList     
                     from Quanlybanhang_donhang a 
                         left join Quanlybanhang_product b on a.Product_Id = b.Product_Id 
                         left join Quanlybanhang_customer c on c.Customer_Id = a.Customer_Id
                         left join Quanlybanhang_workingstatus d on d.Workingstatus_Id = a.Workingstatus_Id
+                        left join Quanlybanhang_source e on e.Source_Id = c.Source_Id
                     where a.IsDelete = 0 {}
                     order by a.Donhang_Id desc
                 """.format(add_to_sql))
@@ -147,6 +162,9 @@ class DonhangTonghop(LoginRequiredMixin, View):
         # by working status
         for item in list_working:
             list_donhang_final['working-{}'.format(item['Workingstatus_Id'])] = list(filter(lambda x: x['Workingstatus_Id'] == item['Workingstatus_Id'], list_donhang))
+
+        # close deadline
+        list_donhang_final['close_deadline'] = list(filter(lambda x: x['DeadlineList'] >= -1, list_donhang))
 
         # chua thanh toan
         list_donhang_final['notpayment'] = list(filter(lambda x: x['Deft'] > 0, list_donhang))
