@@ -54,7 +54,7 @@ class Donhang(models.Model):
     Donhang_Id = models.AutoField(primary_key=True)
     Donhang_Name = models.CharField(max_length=255)
     FlashDesign_Flag = models.IntegerField()
-    WorkingStatus_Id = models.ForeignKey(Workingstatus, on_delete=models.CASCADE, db_column='Workingstatus_Id')
+    Workingstatus_Id = models.ForeignKey(Workingstatus, on_delete=models.CASCADE, db_column='Workingstatus_Id')
     Product_Id = models.ForeignKey(Product, on_delete=models.CASCADE, db_column='Product_Id')
     Customer_Id = models.ForeignKey(Customer, on_delete=models.CASCADE, db_column='Customer_Id')
     CreatedDate = models.DateTimeField(default=timezone.now())

@@ -117,6 +117,8 @@ class DonhangTonghop(LoginRequiredMixin, View):
         # chua thanh toan
         list_donhang_final['notpayment'] = list(filter(lambda x: x['Deft'] > 0, list_donhang))
 
+
+
         return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang_final': list_donhang_final, 'filteroption': 'last30day', 'list_working': list_working})
     def post(self, request):
         # return HttpResponse(request.POST['inputState'])
@@ -248,7 +250,7 @@ class Updatedonhang(LoginRequiredMixin, View):
             models.Donhang.objects.filter(pk=donhang_id).update(
                 Donhang_Name=request.POST['Donhang_Name'],
                 FlashDesign_Flag=request.POST['FlashDesign_Flag'],  # 1 if request.POST['FlashDesign_Flag'] == 'on' else 0,
-                WorkingStatus_Id=models.Workingstatus.objects.get(pk=request.POST['Workingstatus_Id']),
+                Workingstatus_Id=models.Workingstatus.objects.get(pk=request.POST['Workingstatus_Id']),
                 Product_Id=models.Product.objects.get(pk=request.POST['Product_Id']),
                 Customer_Id=models.Customer.objects.get(pk=request.POST['Customer_Id']),
                 Deadline=request.POST['Deadline'],
@@ -289,7 +291,7 @@ class NhapDonHang(LoginRequiredMixin, View):
         donhang = models.Donhang.objects.create(
             Donhang_Name=request.POST['Donhang_Name'],
             FlashDesign_Flag = request.POST['FlashDesign_Flag'], #1 if request.POST['FlashDesign_Flag'] == 'on' else 0,
-            WorkingStatus_Id = models.Workingstatus.objects.get(pk=1),
+            Workingstatus_Id = models.Workingstatus.objects.get(pk=1),
             Product_Id = models.Product.objects.get(pk=request.POST['Product_Id']),
             Customer_Id = models.Customer.objects.get(pk=request.POST['Customer_Id']),
             CreatedDateOrigin = func_convert_local_time(datetime.datetime.utcnow()), # adjust 12h because of local timezone in heroku
@@ -341,3 +343,24 @@ class NhapKhachHang(LoginRequiredMixin, View):
         product = models.Product.objects.all()
         working = models.Workingstatus.objects.all()
         return render(request, 'QLBH/nhap_don_hang.html', {'customer': customer, 'product': product, 'working': working, 'selected_customer': cus.pk})
+
+
+
+class AjaxUpdateDatabase(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def post(self, request):
+        if request.POST['post-type'] == 'deal__workingstatus':
+            obj = models.Donhang.objects.get(pk=request.POST['donhang_id'])
+            # print(obj.Workingstatus_Id)
+            # print(models.Workingstatus.objects.get(pk = 2))
+            obj.Workingstatus_Id = models.Workingstatus.objects.get(pk = request.POST['value'])
+            obj.save()
+
+            return HttpResponse("ok")
+
+        elif request.POST['post-type'] == 'deal__payment':
+            obj = models.Donhang.objects.get(pk=request.POST['donhang_id'])
+            obj.Donhang_Price_Payment = request.POST['value']
+            obj.save()
+            return HttpResponse("ok")

@@ -5,6 +5,10 @@
     <title>Danh sách đơn hàng</title>
 {% endblock %}
 
+{% block headerlink %}
+    <script type="text/javascript" src="{% static 'QLBH/js/doomEdit/jquery.doomEdit.js' %}"></script>
+{% endblock %}
+
 {% block nav_item_donhang %}active{% endblock %}
 
 {% block subtitle %}
@@ -12,50 +16,6 @@
 {% endblock %}
 
 {% block content %}
-{#    <div class="container-fluid">#}
-{##}
-{#        <div class="d-inline-flex m-0 p-0 float-right">#}
-{#        <div class="m-0 p-0">#}
-{#           <form action="{% url 'QLBH:dsdonhang' %}" id="viewoption" name="FormOption" method="post">#}
-{#               {% csrf_token %}#}
-{#               <div class="">#}
-{#                   <select id="inputState" name="inputState" class="form-control form-control-custom" onchange="viewoption.submit()" required>#}
-{#                       {% if filteroption == 'Tháng này' %}#}
-{#                           <option selected>Tháng này</option>#}
-{#                       {% else %}#}
-{#                           <option>Tháng này</option>#}
-{#                       {% endif %}#}
-{#                       {% if filteroption == 'Tiếp nhận đơn' %}#}
-{#                           <option selected>Tiếp nhận đơn</option>#}
-{#                       {% else %}#}
-{#                           <option>Tiếp nhận đơn</option>#}
-{#                       {% endif %}#}
-{#                       {% if filteroption == 'Đang thực hiện' %}#}
-{#                           <option selected>Đang thực hiện</option>#}
-{#                       {% else %}#}
-{#                           <option>Đang thực hiện</option>#}
-{#                       {% endif %}#}
-{#                       {% if filteroption == 'Upsale' %}#}
-{#                           <option selected>Upsale</option>#}
-{#                       {% else %}#}
-{#                           <option>Upsale</option>#}
-{#                       {% endif %}#}
-{#                       {% if filteroption == 'Chưa thanh toán' %}#}
-{#                           <option selected>Chưa thanh toán</option>#}
-{#                       {% else %}#}
-{#                           <option>Chưa thanh toán</option>#}
-{#                       {% endif %}#}
-{#                       {% if filteroption == 'Tất cả đơn' %}#}
-{#                           <option selected>Tất cả đơn</option>#}
-{#                       {% else %}#}
-{#                           <option>Tất cả đơn</option>#}
-{#                       {% endif %}#}
-{#                   </select>#}
-    {#                           <label>Loại logo</label>#}
-{#               </div>#}
-{#           </form>#}
-{#       </div>#}
-{#    </div>#}
 
     <div class="container-fluid">
 {#        <div class="d-inline-flex">#}
@@ -174,12 +134,15 @@
                     {#                                    <td>{{ item.Donhang_Name }}</td>#}
                                                         <td>{{ item.Product_Name }}</td>
                                                         <td>{{ item.Deadline|date:"d-m-Y" }}</td>
-                                                        <td>{{ item.Workingstatus_Name }}</td>
+
+{#                                                        <td>{{ item.Workingstatus_Name }}</td>#}
+                                                        <td><span class="dedit-select" donhang_id="{{ item.Donhang_Id }}" post-type="deal__workingstatus">{{ item.Workingstatus_Name }}</span></td>
                                                         <td>{{ item.CreatedDate|date:"d-m-Y"}}</td>
                                                         <td><a href="#">{{ item.Customer_Name }}</a></td>
                                                         <td>{{ item.Source_Name }}</td>
-                                                        <td class="text-right pr-2">{{ item.Total |floatformat:"g"}}</td>
-                                                        <td class="text-right mr-sm-2">{{ item.Donhang_Price_Payment|floatformat:"g"}}</td>
+                                                        <td class="text-right pr-2" post-type="deal__total">{{ item.Total |floatformat:"g"}}</td>
+                                                        <td class="text-right pr-2"><span class="dedit-simple-blur" donhang_id="{{ item.Donhang_Id }}" post-type="deal__payment">{{ item.Donhang_Price_Payment|floatformat:"g"}}</span></td>
+{#                                                        <td class="text-right mr-sm-2">{{ item.Donhang_Price_Payment|floatformat:"g"}}</td>#}
                                                         <td class="text-right mr-sm-2">{{ item.Deft |floatformat:"g"}}</td>
                         {#                                        <td>{{ item.Note }}</td>#}
                                                     </tr>
@@ -281,19 +244,29 @@
 
 {% block jsscript %}
     <script>
-
-    let xlist = document.querySelectorAll("#myTab li a");
-    for (let item of xlist) {
-        let xdata = document.getElementById(item.getAttribute('aria-controls'));
-        let table_length = xdata.querySelectorAll('tbody tr').length;
-        if (table_length > 0) {
-            item.querySelector('span').innerHTML = table_length
+        let xlist = document.querySelectorAll("#myTab li a");
+        for (let item of xlist) {
+            let xdata = document.getElementById(item.getAttribute('aria-controls'));
+            let table_length = xdata.querySelectorAll('tbody tr').length;
+            if (table_length > 0) {
+                item.querySelector('span').innerHTML = table_length
+            }
         }
-    }
 
-	$('#dataTable-all').dataTable({
-	   "order": []
-	});
-
+        $('#dataTable-all').dataTable({
+           "order": []
+        });
 	</script>
+    <script type="text/javascript">
+      let workingstatus_data = {
+         {% for item in list_working %}
+            "{{item.Workingstatus_Id}}": "{{item.Workingstatus_Name}}",
+         {% endfor %}
+      }
+      let xpath_url = "{% url 'QLBH:ajax_update_db' %}"
+      let csrf_token = "{{  csrf_token  }}"
+
+
+   </script>
+   <script type="text/javascript" src="{% static 'QLBH/js/doomEdit/jquery.doomEdit.adjust.js' %}"></script>
 {% endblock %}
