@@ -96,8 +96,10 @@ $(document).ready(function () {
         cancelBtn: false,
         editField: generateSelectHTML(workingstatus_data),
         afterFormSubmit: function (data, form, el) {
-
-            if (Object.values(workingstatus_data).includes(data)) {
+            console.log(data)
+            console.log(workingstatus_data)
+            console.log(Object.keys(workingstatus_data))
+            if (Object.keys(workingstatus_data).includes(data)) {
                 el.text(workingstatus_data[data]);
                 $.ajax({
                    type: 'POST',
