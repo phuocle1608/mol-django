@@ -6,7 +6,9 @@
 {% endblock %}
 
 {% block headerlink %}
+
     <script type="text/javascript" src="{% static 'QLBH/js/doomEdit/jquery.doomEdit.js' %}"></script>
+    <link href="{% static 'QLBH/css/doomEdit/doomEdit.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block nav_item_donhang %}active{% endblock %}
@@ -136,12 +138,12 @@
                                                         <td>{{ item.Deadline|date:"d-m-Y" }}</td>
 
 {#                                                        <td>{{ item.Workingstatus_Name }}</td>#}
-                                                        <td><span class="dedit-select" donhang_id="{{ item.Donhang_Id }}" post-type="deal__workingstatus">{{ item.Workingstatus_Name }}</span></td>
+                                                        <td><span class="dedit-select" donhang_id="{{ item.Donhang_Id }}" post-type="deal__workingstatus">{{ item.Workingstatus_Name }}</span> <span class="doom-item-hide"><img src="{% static 'QLBH\img\pencil.png' %}" alt="" width="14"></span></td>
                                                         <td>{{ item.CreatedDate|date:"d-m-Y"}}</td>
                                                         <td><a href="#">{{ item.Customer_Name }}</a></td>
                                                         <td>{{ item.Source_Name }}</td>
                                                         <td class="text-right pr-2" post-type="deal__total">{{ item.Total |floatformat:"g"}}</td>
-                                                        <td class="text-right pr-2"><span class="dedit-simple-blur" donhang_id="{{ item.Donhang_Id }}" post-type="deal__payment">{{ item.Donhang_Price_Payment|floatformat:"g"}}</span></td>
+                                                        <td class="text-right pr-2"><span class="dedit-simple-blur" donhang_id="{{ item.Donhang_Id }}" post-type="deal__payment">{{ item.Donhang_Price_Payment|floatformat:"g"}}</span><span class="doom-item-hide"><img src="{% static 'QLBH\img\pencil.png' %}" width="14" alt=""></span></td>
 {#                                                        <td class="text-right mr-sm-2">{{ item.Donhang_Price_Payment|floatformat:"g"}}</td>#}
                                                         <td class="text-right mr-sm-2">{{ item.Deft |floatformat:"g"}}</td>
                         {#                                        <td>{{ item.Note }}</td>#}
@@ -269,4 +271,5 @@
 
    </script>
    <script type="text/javascript" src="{% static 'QLBH/js/doomEdit/jquery.doomEdit.adjust.js' %}"></script>
+
 {% endblock %}
