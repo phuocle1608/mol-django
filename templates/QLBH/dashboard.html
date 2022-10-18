@@ -2,216 +2,254 @@
 {% load static %}
 
 {% block title %}
-    <title>Dashboard</title>
+<title>Dashboard</title>
 {% endblock %}
 
+{% block headerlink %}
+
+{% endblock %}
+
+{% block nav_item_donhang %}active{% endblock %}
+
+{% block subtitle %}
+<div class="h3 ml-2 mt-3 custom-text-title d-inline-flex">Danh sách đơn hàng</div>
+{% endblock %}
+
+
 {% block content %}
-    <div class="container-fluid">
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+        <select name="choosedate" id="range_date_of_dashboard"
+            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <option value="last30day" class="btn-secondary">30 ngày gần nhất</option>
+            <option value="thismonth" class="btn-secondary">Tháng này</option>
+            <option value="thisquarter" class="btn-secondary">Quý này</option>
+            <option value="thisyear" class="btn-secondary">Năm này</option>
+        </select>
 
+    </div>
 
-        <!-- Page Heading -->
-        <h3 class="h3 font-weight-bold text-primary ml-4">#{{ donhang.Donhang_Id }}: {{ donhang.Donhang_Name }} <sup><a href="{% url 'QLBH:sua_don_hang' donhang.Donhang_Id %}"><img src="{% static 'QLBH\img\edit.png' %}" width="20px"></a></sup></h3>
-        
+    <!-- Content Row -->
+    <div class="row mb-3">
 
-        <div class="container-fluid mt-4">
-            <div class="row">
-                <div class="col-sm-9">
-                    <div class="card shadow mb-2">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Thông tin chung</h6>
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="container-fluid">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <div class="row ">
+                        <!-- Doanh thu -->
+                        <div class="col-sm-12 col-lg-6 col-xl-3">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-2">Doanh
+                                thu</div>
+                            <div class="h3 font-weight-bold text-gray-800  mb-2">$40,000</div>
+                            <div class="font-weight-light text-gray-800 text-sm-left text-xs mb-0">
+                                <span style="color: green;">▲10% so với tháng trước</span>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-sm">
-                                        <p>Khách hàng: <a href="#">{{ donhang.Customer_Name }}</a></p>
-                                    </div>
-                                    <div class="col-sm">
-                                        <p>Số điện thoại: {{ donhang.Customer_Phone }}</p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm">
-                                        <p>Gói thiết kế: {{ donhang.Product_Name }}  <span style="color: #78261f; font-weight: bold; font-style: italic; font-size: 0.9rem">{{ donhang.Flash_Flag }}</span> </p>
-                                    </div>
-                                    <div class="col-sm">
-                                        <p>Tiến độ thực hiện: {{ donhang.Workingstatus_Name }}</p>
-                                    </div>
-                                </div>
-
-
+                        <!-- Chưa thanh toán -->
+                        <div class="col-sm-12 col-lg-6 col-xl-3">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-2">Chưa
+                                thanh toán</div>
+                            <div class="h3 mb-0 font-weight-bold text-gray-800  mb-2">$20,000</div>
+                            <div class="font-weight-light text-gray-800 text-sm-left text-xs mb-0">
+                                <span style="color: red;">▼ 10% so với tháng trước</span>
+                            </div>
+                        </div>
+                        <!-- Tổng đơn hàng -->
+                        <div class="col-sm-12 col-lg-6 col-xl-3">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-2">Tổng
+                                đơn hàng</div>
+                            <div class="h3 mb-0 font-weight-bold text-gray-800  mb-2">35</div>
+                            <div class="font-weight-light text-gray-800 text-sm-left text-xs mb-0">
+                                <span style="color: red;">▼ 10% so với tháng trước</span>
+                            </div>
+                        </div>
+                        <!-- Đang thực hiện -->
+                        <div class="col-sm-12 col-lg-6 col-xl-3">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-2">Đang
+                                thực hiện</div>
+                            <div class="h3 mb-0 font-weight-bold text-gray-800  mb-2">14</div>
+                            <div class="font-weight-light text-gray-800 text-sm-left text-xs mb-0">
+                                <span style="color: red;">▼ 10% so với tháng trước</span>
                             </div>
                         </div>
                     </div>
-                    <div class="card shadow mb-2">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Yêu cầu</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="container-fluid mt-2">
-                                <div class="row">
-                                    <p>{{ donhang.Donhang_Require }}</p>
-                                </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
 
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card shadow mb-2">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Lịch sử</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="container-fluid mt-2">
-                                <div class="row">
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores in architecto delectus id fuga
-                                        culpa porro magni ratione vero adipisci. Ipsam impedit aperiam cum reprehenderit libero
-                                        excepturi dignissimos laudantium dolorum.</p>
-                                </div>
+    </div>
 
-                            </div>
+    <!-- Content Row -->
+
+    <div class="row">
+
+        <!-- Area Chart -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Doanh thu</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="card shadow mb-2">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Thông tin khách hàng</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="container-fluid m-0 p-0">
-                                <div class="row">
-                                    <div class="col-sm-3 m-0 p-0">
-                                        Tên:
-                                    </div>
-                                    <div class="col-sm-9">
-                                        {{ donhang.Customer_Name }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3 m-0 p-0">
-                                        SĐT:
-                                    </div>
-                                    <div class="col-sm-9">
-                                        {{ donhang.Customer_Phone }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3 m-0 p-0">
-                                        FB:
-                                    </div>
-                                    <div class="col-sm-9">
-                                        {{ donhang.Customer_Facebook }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3 m-0 p-0">
-                                        Zalo:
-                                    </div>
-                                    <div class="col-sm-9">
-                                        {{ donhang.Customer_ZaloName }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3 m-0 p-0">
-                                        Địa chỉ:
-                                    </div>
-                                    <div class="col-sm-9">
-                                        {{ donhang.Customer_Address }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-3 m-0 p-0">
-                                        Nguồn:
-                                    </div>
-                                    <div class="col-sm-9">
-                                        {{ donhang.Source_Name }}
-                                    </div>
-                                </div>
-                            </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Pie Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Doanh thu theo nguồn khách hàng</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </div>
-
-                    <div class="card shadow mb-2">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Thông tin thanh toán</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="container-fluid m-0 p-0">
-                                <div class="row font-weight-normal text-primary">
-                                    <div class="col m-0 p-0">
-                                        Tổng đơn hàng:
-                                    </div>
-                                    <div class="col text-right p-0 pr-2">
-                                        {{ donhang.Total|floatformat:"g" }}
-                                    </div>
-                                </div>
-                                <div class="row font-weight-light">
-                                    <div class="col m-0 pl-4">
-                                        Giá combo:
-                                    </div>
-                                    <div class="col text-right pr-2">
-                                        {{ donhang.Donhang_Price_Combo|floatformat:"g" }}
-                                    </div>
-                                </div>
-                                <div class="row font-weight-light">
-                                    <div class="col m-0 pl-4">
-                                        Upsale:
-                                    </div>
-                                    <div class="col text-right pr-2">
-                                        {{ donhang.Donhang_Price_Upsale|floatformat:"g" }}
-                                    </div>
-                                </div>
-                                <div class="row font-weight-light">
-                                    <div class="col m-0 pl-4">
-                                        Giảm giá:
-                                    </div>
-                                    <div class="col text-right pr-2">
-                                        {{ donhang.Donhang_Price_Discount|floatformat:"g" }}
-                                    </div>
-                                </div>
-                                <hr class="sidebar-divider m-2 ">
-                                <div class="row font-weight-normal text-primary">
-                                    <div class="col m-0 p-0">
-                                        Đã thanh toán:
-                                    </div>
-                                    <div class="col text-right pr-2">
-                                        {{ donhang.Donhang_Price_Payment|floatformat:"g" }}
-                                    </div>
-                                </div>
-                                <hr class="sidebar-divider m-2">
-                                <div class="row font-weight-normal text-primary">
-                                    <div class="col m-0 p-0">
-                                        Cần thanh toán:
-                                    </div>
-                                    <div class="col text-right pr-2">
-                                        {{ donhang.Deft|floatformat:"g" }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="myPieChart"></canvas>
                     </div>
-{#    a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, a.Deadline, #}
-{#    d.Workingstatus_Name, a.CreatedDate, c.Customer_Name, c.Customer_Phone, Customer_Id #}
-{#    a.Donhang_Price_Combo, a.Donhang_Price_Upsale, a.Donhang_Price_Discount,#}
-{#    a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount as Total, #}
-{#    a.Donhang_Price_Payment, a.Donhang_Price_Combo + a.Donhang_Price_Upsale - a.Donhang_Price_Discount - a.Donhang_Price_Payment as Deft#}
-{#                    <div class="card shadow mb-2">#}
-{#                        <div class="card-header py-3">#}
-{#                            <h6 class="m-0 font-weight-bold text-primary">Đơn hàng đã thực hiện</h6>#}
-{#                        </div>#}
-{#                        <div class="card-body">#}
-{#                            <ol class="list-unstyled">#}
-{#                                <li>Đơn hàng 1</li>#}
-{#                                <li>Đơn hàng 1</li>#}
-{#                                <li>Đơn hàng 1</li>#}
-{#                                <li>Đơn hàng 1</li>#}
-{#                            </ol>#}
-{#                        </div>#}
-{#                    </div>#}
+                    <!-- <div class="mt-4 text-center small">
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-primary"></i> Direct
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-success"></i> Social
+                    </span>
+                    <span class="mr-2">
+                        <i class="fas fa-circle text-info"></i> Referral
+                    </span>
+                    </div> -->
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Content Row -->
+    <div class="row">
+
+        <!-- Content Column -->
+        <div class="col-xl-8 col-lg-7 mb-4">
+
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Tiến độ thực hiện</h6>
+                </div>
+                <div class="card-body">
+                    <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Payout Details <span class="float-right">80%</span></h4>
+                    <div class="progress mb-4">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Doanh thu theo gói sản phẩm</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-pie pt-4">
+                        <canvas id="myPieChart2"></canvas>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->
+
+{# </div>#}
+<!-- End of Main Content -->
+{% endblock %}
+
+
+{% block jsscript %}
+<!-- Page level plugins -->
+<script src="{% static 'QLBH/vendor/chart.js/Chart.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'QLBH/js/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'QLBH/js/demo/chart-pie-demo.js' %}"></script>
 {% endblock %}

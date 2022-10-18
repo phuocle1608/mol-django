@@ -8,6 +8,7 @@ function numberWithCommas(x) {
 
 function generateSelectHTML(xdict) {
     const html_arr = []
+    console.log("asjdiasdji")
     for (let x in xdict) {
         html_arr.push(`<option value="${x}">${xdict[x]}</option>`)
     }

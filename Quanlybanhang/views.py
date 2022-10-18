@@ -364,3 +364,8 @@ class AjaxUpdateDatabase(LoginRequiredMixin, View):
             obj.Donhang_Price_Payment = request.POST['value']
             obj.save()
             return HttpResponse("ok")
+
+class Dashboard(LoginRequiredMixin, View):
+    login_url = '/login/'
+    def get(self, request):
+        return render(request, 'QLBH/dashboard.html')

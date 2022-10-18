@@ -13,5 +13,6 @@ urlpatterns = [
     path('nhap_khach_hang/', views.NhapKhachHang.as_view(), name='nhap_khach_hang'),
     path('donhang/update/<int:donhang_id>', views.Updatedonhang.as_view(), name='sua_don_hang'),
     path('login/', views.Login.as_view(), name='login'),
-    path('ajax_update_db/', views.AjaxUpdateDatabase.as_view(), name='ajax_update_db')
+    path('ajax_update_db/', views.AjaxUpdateDatabase.as_view(), name='ajax_update_db'),
+    path('dashboard/', views.Dashboard.as_view(), name='dashboard'),
 ]
