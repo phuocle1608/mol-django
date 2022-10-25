@@ -90,10 +90,10 @@ WSGI_APPLICATION = 'MolSite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sPVKk9cOvn',
-        'USER': 'sPVKk9cOvn',
-        'PASSWORD': 'oJ846Iu5dD',
-        'HOST': 'remotemysql.com',
+        'NAME': 'rwkbmguo_moldesign',
+        'USER': 'rwkbmguo_moladmin',
+        'PASSWORD': ',2BpA}k?g_gl',
+        'HOST': 'c11.vinahost.vn',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
