@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-4i_5%_ydewfg0l&trc=3zvwqxj%=-w*cg1i9#8^!ojr4ch^kcn
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['mol-django.herokuapp.com', 'localhost', '127.0.0.1', 'remotemysql.com', 'phpmyadmin.net']
+ALLOWED_HOSTS = ['mol-django.herokuapp.com', 'localhost', '127.0.0.1', 'remotemysql.com', 'phpmyadmin.net', 'c11.vinahost.vn']
 
 
 # Application definition
