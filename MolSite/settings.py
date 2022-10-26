@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-4i_5%_ydewfg0l&trc=3zvwqxj%=-w*cg1i9#8^!ojr4ch^kcn
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['mol-django.herokuapp.com', 'localhost', '127.0.0.1', 'remotemysql.com', 'phpmyadmin.net', 'c11.vinahost.vn']
+ALLOWED_HOSTS = ['mol-django.herokuapp.com', 'localhost', '127.0.0.1', 'remotemysql.com', 'phpmyadmin.net', 'c11.vinahost.vn', 'amazonaws.com']
 
 
 # Application definition
@@ -100,6 +100,20 @@ DATABASES = {
         }
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'sPVKk9cOvn',
+#         'USER': 'sPVKk9cOvn',
+#         'PASSWORD': 'oJ846Iu5dD',
+#         'HOST': 'remotemysql.com',
+#         'PORT': '3306',
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#         }
+#     }
+# }
 
 # local db
 # DATABASES = {
