@@ -32,6 +32,10 @@ ul.sidebar {
 }
 
 
+.form-control {
+    font-size: 0.9rem;
+}
+
 .form-control:focus {
     border: 1px solid #5264AE !important;
     /* outline: none !important; */
@@ -166,4 +170,15 @@ nav-link-custom:after {
 nav-link-custom:hover:after {
 	width: 400px;
     margin-left: -200px;
+}
+
+#dataTable-daterangepicker {
+    display: flex;
+    align-items: left;
+    
+}
+
+#input__daterangepicker {
+    margin: 0;
+    padding: 3 12 !important;
 }

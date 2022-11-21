@@ -9,6 +9,11 @@
 
     <script type="text/javascript" src="{% static 'QLBH/js/doomEdit/jquery.doomEdit.js' %}"></script>
     <script type="text/javascript" src="{% static 'QLBH/js/doomEdit/jquery.doomEdit.adjust.js' %}"></script>
+    <script type="text/javascript" src="{% static 'QLBH/daterangepicker/moment.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'QLBH/daterangepicker/daterangepicker.js' %}"></script>
+    <script type="text/javascript" src="{% static 'QLBH/daterangepicker/daterangepicker-custom.js' %}"></script>
+    
+    <link href="{% static 'QLBH/daterangepicker/daterangepicker.css' %}" rel="stylesheet">
     <link href="{% static 'QLBH/css/doomEdit/doomEdit.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -51,38 +56,40 @@
 
 
                             </ul>
-                            <div class="m-0 mt-1 p-0 float-right">
-                                   <form action="{% url 'QLBH:dsdonhang' %}" id="viewoption" name="FormOption" method="post">
-                                       {% csrf_token %}
-                                       <div class="">
-                                           <select id="inputState" name="inputState" class="form-control form-control-custom" onchange="viewoption.submit()" required>
-                                               {% if filteroption == 'thismonth' %}
-                                                   <option value="thismonth" selected>Tháng này</option>
-                                               {% else %}
-                                                   <option value="thismonth">Tháng này</option>
-                                               {% endif %}
-
-                                               {% if filteroption == 'last30day' %}
-                                                   <option value="last30day" selected>30 ngày gần nhất</option>
-                                               {% else %}
-                                                   <option value="last30day" >30 ngày gần nhất</option>
-                                               {% endif %}
-
-                                               {% if filteroption == 'all' %}
-                                                   <option value="all" selected>Tất cả đơn</option>
-                                               {% else %}
-                                                   <option value="all">Tất cả đơn</option>
-                                               {% endif %}
-                                           </select>
-                            {#                           <label>Loại logo</label>#}
-                                       </div>
-                                   </form>
-                               </div>
+                            <!-- <div class="m-0 mt-1 p-0 float-right">
+                                <form action="{% url 'QLBH:dsdonhang' %}" id="viewoption" name="FormOption" method="post">
+                                    {% csrf_token %}
+                                    <div class="">
+                                        <select id="inputState" name="inputState" class="form-control form-control-custom"
+                                            onchange="viewoption.submit()" required>
+                                            {% if filteroption == 'thismonth' %}
+                                            <option value="thismonth" selected>Tháng này</option>
+                                            {% else %}
+                                            <option value="thismonth">Tháng này</option>
+                                            {% endif %}
+                                
+                                            {% if filteroption == 'last30day' %}
+                                            <option value="last30day" selected>30 ngày gần nhất</option>
+                                            {% else %}
+                                            <option value="last30day">30 ngày gần nhất</option>
+                                            {% endif %}
+                                
+                                            {% if filteroption == 'all' %}
+                                            <option value="all" selected>Tất cả đơn</option>
+                                            {% else %}
+                                            <option value="all">Tất cả đơn</option>
+                                            {% endif %}
+                                        </select>
+                                
+                                    </div>
+                                </form>
+                            </div> -->
                         </div>
 
                     </div>
                 </div>
                 <div class="card-body">
+
                     <div class="tab-content">
                         {% for key, values in list_donhang_final.items %}
                             {% if key == 'all' %}
@@ -272,6 +279,23 @@
 
 
    </script>
+   <script>
+        let ele_daterangepicker = document.querySelector('#dataTable-all_wrapper div div')
+        let filteroption = "{{ filteroption }}"
+        let start_date = "{{ start_date }}"
+        let end_date = "{{ end_date }}"
+        console.log("ECUADOR")
+        ele_daterangepicker.innerHTML = `
 
+            <form action="{% url 'QLBH:dsdonhang' %}" id="daterangepicker__viewoption" name="daterangepicker__FormOption" method="post">
+                {% csrf_token %}
+                <div id="dataTable-daterangepicker" class="dataTables_filter ">
+                    <input type="text" id="input__daterangepicker" name="input__daterangepicker" class="form-control">
+                </div>
+            </form>
+        `
+        // $('#input__daterangepicker').val(filteroption)
+   </script>
+<!-- onchange="daterangepicker__viewoption.submit()" -->
 
 {% endblock %}
