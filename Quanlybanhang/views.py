@@ -28,7 +28,7 @@ def func_convert_local_time(xdate):
         return str(e)
 
 def cursorbyname(rawsql):
-    
+
     cursor = connection.cursor()
     cursor.execute(rawsql)
     result = cursor.fetchall()
@@ -120,7 +120,7 @@ class DonhangTonghop(LoginRequiredMixin, View):
         return render(request, 'QLBH/tong_hop_don_hang.html', {'list_donhang_final': list_donhang_final, 'filteroption': 'Last 30 Days', 'list_working': list_working, 'start_date': '2022-01-01', 'start_end': '2022-12-31'})
 
     def post(self, request):
-        print(request.POST['daterangepicker_type'])
+        # print(request.POST['daterangepicker_type'])
         list_donhang = cursorbyname("""
                 select 
                     a.Donhang_Id, a.Donhang_Name, case a.FlashDesign_Flag when 1 then 'Flash Design' else '' end Flash_Flag, DATE_ADD(a.CreatedDate, INTERVAL a.Deadline DAY) as Deadline,
@@ -448,7 +448,117 @@ class Dashboard(LoginRequiredMixin, View):
         # donhang_info = donhang_info[0]
         # donhang_info['Revenue_sign'] = (1 if float(donhang_info['Revenue_per']) > 0 else -1) if float(donhang_info['Revenue_per']) != 0 else 0
         # donhang_info['TongDonHang_sign'] = (1 if float(donhang_info['TongDonHang_per']) > 0 else -1) if float(donhang_info['TongDonHang_per']) != 0 else 0
-        return render(request, 'QLBH/dashboard.html', {'filteroption': 'Last 30 Days' , 'info': donhang_info[0], 'revenue_by_source': revenue_by_source, 'revenue_by_product': revenue_by_product})
+        return render(request, 'QLBH/dashboard.html', {'filteroption': 'Last 30 Days', 'period': '30 ngày trước', 'info': donhang_info[0], 'revenue_by_source': revenue_by_source, 'revenue_by_product': revenue_by_product})
+
+    def post(self, request):
+        filteroption = request.POST['daterangepicker_type']
+        start_current = request.POST['daterangepicker_start']
+        end_current = request.POST['daterangepicker_end']
+        end_prev = (datetime.datetime.strptime(request.POST['daterangepicker_start'], '%Y-%m-%d') + datetime.timedelta(days=-1)).strftime('%Y-%m-%d')
+        start_prev = (datetime.datetime.strptime(request.POST['daterangepicker_start'], '%Y-%m-%d') + datetime.timedelta(days=-1 - (datetime.datetime.strptime(request.POST['daterangepicker_end'], '%Y-%m-%d') - datetime.datetime.strptime(request.POST['daterangepicker_start'], '%Y-%m-%d')).days)).strftime('%Y-%m-%d')
+        print(filteroption)
+        print(start_current)
+        print(end_current)
+        print(start_prev)
+        print(end_prev)
+
+
+        donhang_info = cursorbyname("""
+            select
+                a.Revenue,
+                a.Claim,
+                a.TongDonHang,
+                a.Working,
+                abs(round(100*(a.Revenue/a.Revenue_prev - 1), 0)) as Revenue_per,
+                abs(a.TongDonHang - a.TongDonHang_prev) as TongDonHang_per,
+                case
+                    when round(100*(a.Revenue/a.Revenue_prev - 1), 0) > 0 then 1
+                    when round(100*(a.Revenue/a.Revenue_prev - 1), 0) < 0 then -1
+                    else 0
+                end Revenue_sign,
+                case
+                    when a.TongDonHang - a.TongDonHang_prev > 0 then 1
+                    when a.TongDonHang - a.TongDonHang_prev < 0 then -1
+                    else 0
+                end TongDonHang_sign
+            from (
+                select
+                (
+                    select sum(a.Donhang_Price_Combo - a.Donhang_Price_Discount+ a.Donhang_Price_Upsale)
+                    from Quanlybanhang_donhang a
+                    where a.IsDelete = 0 and a.CreatedDate >= '{start_current}' and a.CreatedDate <= '{end_current}'
+                ) as Revenue,
+                (
+                    select sum(a.Donhang_Price_Combo - a.Donhang_Price_Discount+ a.Donhang_Price_Upsale - a.Donhang_Price_Payment)
+                    from Quanlybanhang_donhang a
+                    where a.IsDelete = 0 and a.CreatedDate >= '{start_current}' and a.CreatedDate <= '{end_current}'
+                ) as Claim,
+                (
+                    select count(a.Donhang_Id)
+                    from Quanlybanhang_donhang a
+                    where a.IsDelete = 0 and a.CreatedDate >= '{start_current}' and a.CreatedDate <= '{end_current}'
+                ) as TongDonHang,
+                (
+                    select count(a.Donhang_Id)
+                    from Quanlybanhang_donhang a
+                    where a.IsDelete = 0 and a.CreatedDate >= '{start_current}' and a.CreatedDate <= '{end_current}' and a.Workingstatus_Id <= 7
+                ) as Working,
+                (
+                    select sum(a.Donhang_Price_Combo - a.Donhang_Price_Discount+ a.Donhang_Price_Upsale)
+                    from Quanlybanhang_donhang a
+                    where a.IsDelete = 0 and a.CreatedDate >= '{start_prev}' and a.CreatedDate <= '{end_prev}'
+                ) as Revenue_prev,
+                (
+                    select count(a.Donhang_Id)
+                    from Quanlybanhang_donhang a
+                    where a.IsDelete = 0 and a.CreatedDate >= '{start_prev}' and a.CreatedDate <= '{end_prev}'
+                ) as TongDonHang_prev
+            ) as a
+        """.format(start_current = start_current, end_current = end_current, start_prev = start_prev, end_prev = end_prev))
+
+        revenue_by_source = cursorbyname("""
+            select c.Source_Name, sum(Donhang_Price_Combo - Donhang_Price_Discount+ Donhang_Price_Upsale) Revenue
+            from Quanlybanhang_donhang a 
+            left join Quanlybanhang_customer b on a.Customer_Id = b.Customer_Id
+            left join Quanlybanhang_source c on b.Source_Id = c.Source_Id
+            where a.IsDelete = 0 and a.CreatedDate >= '{start_current}' and a.CreatedDate <= '{end_current}'
+            group by c.Source_Name
+            order by c.Source_Name
+        """.format(start_current = start_current, end_current = end_current))
+
+        revenue_by_product = cursorbyname("""
+            select b.Product_Name, sum(Donhang_Price_Combo - Donhang_Price_Discount+ Donhang_Price_Upsale) Revenue
+            from Quanlybanhang_donhang a 
+            left join Quanlybanhang_product b on a.Product_Id = b.Product_Id
+            where a.IsDelete = 0 and a.CreatedDate >= '{start_current}' and a.CreatedDate <= '{end_current}'
+            group by b.Product_Name
+            order by b.Product_Name
+        """.format(start_current = start_current, end_current = end_current))
+
+        revenue_by_source = {
+            'label': [i['Source_Name'] for i in revenue_by_source],
+            'value': [int(i['Revenue']) for i in revenue_by_source],
+        }
+
+        revenue_by_product = {
+            'label': [i['Product_Name'] for i in revenue_by_product],
+            'value': [int(i['Revenue']) for i in revenue_by_product],
+        }
+        dict_period = {
+            'Last 30 Days': '30 ngày trước',
+            'Today': 'hôm qua',
+            'Yesterday': '2 ngày trước',
+            'Last 7 Days': '7 ngày trước',
+            'This Month': 'tháng trước',
+            'Last Month': '2 tháng trước'
+        }
+
+        if filteroption in dict_period.keys():
+            period = dict_period[filteroption]
+        else:
+            period = 'kỳ trước'
+
+        return render(request, 'QLBH/dashboard.html', {'start_date': datetime.datetime.strptime(start_current, '%Y-%m-%d').strftime('%d/%m/%Y'), 'end_date': datetime.datetime.strptime(end_current, '%Y-%m-%d').strftime('%d/%m/%Y'), 'filteroption': filteroption, 'period': period, 'info': donhang_info[0], 'revenue_by_source': revenue_by_source, 'revenue_by_product': revenue_by_product})
 
 
 class Test(LoginRequiredMixin, View):
