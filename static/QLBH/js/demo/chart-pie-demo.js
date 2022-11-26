@@ -18,16 +18,16 @@ function generateColorSet(listoflabel, xtype) {
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#858796';
 
-// Pie Chart Example
-var ctx = document.getElementById("myPieChart");
+// Pie Chart revenue_by_source
+var ctx = document.getElementById("revenue_by_source");
 var myPieChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: ["Direct", "Referral", "Social", "TEST"],
+        labels: revenue_by_source['label'], //["Direct", "Referral", "Social", "TEST"],
         datasets: [{
-            data: [55, 30, 15, 32],
-            backgroundColor: generateColorSet(["Direct", "Referral", "Social", "TEST"], "background"),
-            hoverBackgroundColor: generateColorSet(["Direct", "Referral", "Social", "TEST"], "backgroundhover"),
+            data: revenue_by_source['value'],
+            backgroundColor: generateColorSet(revenue_by_source['label'], "background"),
+            hoverBackgroundColor: generateColorSet(revenue_by_source['label'], "backgroundhover"),
             hoverBorderColor: "rgba(234, 236, 244, 1)",
         }],
     },
@@ -38,30 +38,31 @@ var myPieChart = new Chart(ctx, {
             bodyFontColor: "#858796",
             borderColor: '#dddfeb',
             borderWidth: 1,
-            xPadding: 15,
-            yPadding: 15,
+            xPadding: 10,
+            yPadding: 5,
             displayColors: false,
-            caretPadding: 10,
+            caretPadding: 5,
         },
         legend: {
             display: true
+
         },
-        cutoutPercentage: 80,
+        cutoutPercentage: 70,
     },
 });
 
-
+//https://www.youtube.com/watch?v=0OIZnoZ8GUU
 
 // Pie Chart Example
-var ctx = document.getElementById("myPieChart2");
+var ctx = document.getElementById("revenue_by_product");
 var myPieChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-        labels: ["Direct", "Referral", "Social", "TEST"],
+        labels: revenue_by_product['label'],
         datasets: [{
-            data: [55, 30, 15, 32],
-            backgroundColor: generateColorSet(["Direct", "Referral", "Social", "TEST"], "background"),
-            hoverBackgroundColor: generateColorSet(["Direct", "Referral", "Social", "TEST"], "backgroundhover"),
+            data: revenue_by_product['value'],
+            backgroundColor: generateColorSet(revenue_by_product['label'], "background"),
+            hoverBackgroundColor: generateColorSet(revenue_by_product['label'], "backgroundhover"),
             hoverBorderColor: "rgba(234, 236, 244, 1)",
         }],
     },
@@ -72,14 +73,14 @@ var myPieChart = new Chart(ctx, {
             bodyFontColor: "#858796",
             borderColor: '#dddfeb',
             borderWidth: 1,
-            xPadding: 15,
-            yPadding: 15,
+            xPadding: 10,
+            yPadding: 5,
             displayColors: false,
             caretPadding: 10,
         },
         legend: {
             display: true
         },
-        cutoutPercentage: 80,
+        cutoutPercentage: 70,
     },
 });

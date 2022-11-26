@@ -5,14 +5,22 @@
 <title>Dashboard</title>
 {% endblock %}
 
-{% block headerlink %}
-
-{% endblock %}
+{#{% block headerlink %}#}
+{##}
+{#{% endblock %}#}
 
 {% block nav_item_donhang %}active{% endblock %}
 
 {% block subtitle %}
 <div class="h3 ml-2 mt-3 custom-text-title d-inline-flex">Danh sách đơn hàng</div>
+{% endblock %}
+
+{% block headerlink %}
+    <script type="text/javascript" src="{% static 'QLBH/daterangepicker/moment.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'QLBH/daterangepicker/daterangepicker.js' %}"></script>
+    <script type="text/javascript" src="{% static 'QLBH/daterangepicker/daterangepicker-custom.js' %}"></script>
+    <link href="{% static 'QLBH/daterangepicker/daterangepicker.css' %}" rel="stylesheet">
+    <link href="{% static 'QLBH/css/doomEdit/doomEdit.css' %}" rel="stylesheet">
 {% endblock %}
 
 
@@ -22,14 +30,20 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-        <select name="choosedate" id="range_date_of_dashboard"
-            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <option value="last30day" class="btn-secondary">30 ngày gần nhất</option>
-            <option value="thismonth" class="btn-secondary">Tháng này</option>
-            <option value="thisquarter" class="btn-secondary">Quý này</option>
-            <option value="thisyear" class="btn-secondary">Năm này</option>
-        </select>
+{#        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>#}
+        <form action="{% url 'QLBH:test' %}" id="daterangepicker__viewoption" name="daterangepicker__FormOption" method="post">
+                {% csrf_token %}
+                <div id="dataTable-daterangepicker" class="dataTables_filter ">
+                    <input type="text" id="input__daterangepicker" name="input__daterangepicker" class="form-control">
+                </div>
+        </form>
+{#        <select name="choosedate" id="range_date_of_dashboard"#}
+{#            class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">#}
+{#            <option value="last30day" class="btn-secondary">30 ngày gần nhất</option>#}
+{#            <option value="thismonth" class="btn-secondary">Tháng này</option>#}
+{#            <option value="thisquarter" class="btn-secondary">Quý này</option>#}
+{#            <option value="thisyear" class="btn-secondary">Năm này</option>#}
+{#        </select>#}
 
     </div>
 
@@ -45,37 +59,49 @@
                         <div class="col-sm-12 col-lg-6 col-xl-3">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-2">Doanh
                                 thu</div>
-                            <div class="h3 font-weight-bold text-gray-800  mb-2">$40,000</div>
+                            <div class="h3 font-weight-bold text-gray-800  mb-2">${{ info.Revenue |floatformat:"g"}}</div>
                             <div class="font-weight-light text-gray-800 text-sm-left text-xs mb-0">
-                                <span style="color: green;">▲10% so với tháng trước</span>
+                                {% if info.Revenue_sign > 0 %}
+                                    <span style="color: green;">▲{{info.Revenue_per}}% so với tháng trước</span>
+                                {% elif info.Revenue_sign < 0 %}
+                                    <span style="color: red;">▼{{info.Revenue_per}}% so với tháng trước</span>
+                                {% else %}
+                                    <span style="color: grey;">0% so với tháng trước</span>
+                                {% endif %}
                             </div>
                         </div>
                         <!-- Chưa thanh toán -->
                         <div class="col-sm-12 col-lg-6 col-xl-3">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-2">Chưa
                                 thanh toán</div>
-                            <div class="h3 mb-0 font-weight-bold text-gray-800  mb-2">$20,000</div>
-                            <div class="font-weight-light text-gray-800 text-sm-left text-xs mb-0">
-                                <span style="color: red;">▼ 10% so với tháng trước</span>
-                            </div>
+                            <div class="h3 mb-0 font-weight-bold text-gray-800  mb-2">${{ info.Claim |floatformat:"g"}}</div>
+{#                            <div class="font-weight-light text-gray-800 text-sm-left text-xs mb-0">#}
+{#                                <span style="color: red;">▼ 10% so với tháng trước</span>#}
+{#                            </div>#}
                         </div>
                         <!-- Tổng đơn hàng -->
                         <div class="col-sm-12 col-lg-6 col-xl-3">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-2">Tổng
                                 đơn hàng</div>
-                            <div class="h3 mb-0 font-weight-bold text-gray-800  mb-2">35</div>
+                            <div class="h3 mb-0 font-weight-bold text-gray-800  mb-2">{{ info.TongDonHang }}</div>
                             <div class="font-weight-light text-gray-800 text-sm-left text-xs mb-0">
-                                <span style="color: red;">▼ 10% so với tháng trước</span>
+                                {% if info.TongDonHang_sign > 0 %}
+                                    <span style="color: green;">▲{{info.TongDonHang_per}} so với tháng trước</span>
+                                {% elif info.TongDonHang_sign < 0 %}
+                                    <span style="color: red;">▼{{info.TongDonHang_per}} so với tháng trước</span>
+                                {% else %}
+                                    <span style="color: grey;">0% so với tháng trước</span>
+                                {% endif %}
                             </div>
                         </div>
                         <!-- Đang thực hiện -->
                         <div class="col-sm-12 col-lg-6 col-xl-3">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-2">Đang
                                 thực hiện</div>
-                            <div class="h3 mb-0 font-weight-bold text-gray-800  mb-2">14</div>
-                            <div class="font-weight-light text-gray-800 text-sm-left text-xs mb-0">
-                                <span style="color: red;">▼ 10% so với tháng trước</span>
-                            </div>
+                            <div class="h3 mb-0 font-weight-bold text-gray-800  mb-2">{{ info.Working }}</div>
+{#                            <div class="font-weight-light text-gray-800 text-sm-left text-xs mb-0">#}
+{#                                <span style="color: red;">▼ 10% so với tháng trước</span>#}
+{#                            </div>#}
                         </div>
                     </div>
                     <!-- </div> -->
@@ -143,7 +169,7 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-pie pt-4">
-                        <canvas id="myPieChart"></canvas>
+                        <canvas id="revenue_by_source"></canvas>
                     </div>
                     <!-- <div class="mt-4 text-center small">
                     <span class="mr-2">
@@ -229,7 +255,7 @@
                 <!-- Card Body -->
                 <div class="card-body">
                     <div class="chart-pie pt-4">
-                        <canvas id="myPieChart2"></canvas>
+                        <canvas id="revenue_by_product"></canvas>
                     </div>
 
                 </div>
@@ -246,10 +272,19 @@
 
 
 {% block jsscript %}
-<!-- Page level plugins -->
-<script src="{% static 'QLBH/vendor/chart.js/Chart.min.js' %}"></script>
 
-<!-- Page level custom scripts -->
-<script src="{% static 'QLBH/js/demo/chart-area-demo.js' %}"></script>
-<script src="{% static 'QLBH/js/demo/chart-pie-demo.js' %}"></script>
+
+    <script>
+        {#let ele_daterangepicker = document.querySelector('#dataTable-all_wrapper div div');#}
+        var filteroption = "{{ filteroption }}";
+        var revenue_by_source = {{ revenue_by_source|safe }};
+        var revenue_by_product = {{ revenue_by_product|safe }};
+        {#let start_date = "{{ start_date }}"#}
+   </script>
+    <!-- Page level plugins -->
+    <script src="{% static 'QLBH/vendor/chart.js/Chart.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'QLBH/js/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'QLBH/js/demo/chart-pie-demo.js' %}"></script>
 {% endblock %}

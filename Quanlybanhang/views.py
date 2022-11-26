@@ -363,7 +363,92 @@ class AjaxUpdateDatabase(LoginRequiredMixin, View):
 class Dashboard(LoginRequiredMixin, View):
     login_url = '/login/'
     def get(self, request):
-        return render(request, 'QLBH/dashboard.html')
+        donhang_info = cursorbyname("""
+            select
+                a.Revenue, 
+                a.Claim, 
+                a.TongDonHang, 
+                a.Working, 
+                abs(round(100*(a.Revenue/a.Revenue_prev - 1), 0)) as Revenue_per, 
+                abs(a.TongDonHang - a.TongDonHang_prev) as TongDonHang_per,
+                case
+                    when round(100*(a.Revenue/a.Revenue_prev - 1), 0) > 0 then 1
+                    when round(100*(a.Revenue/a.Revenue_prev - 1), 0) < 0 then -1
+                    else 0 
+                end Revenue_sign,
+                case
+                    when a.TongDonHang - a.TongDonHang_prev > 0 then 1
+                    when a.TongDonHang - a.TongDonHang_prev < 0 then -1
+                    else 0 
+                end TongDonHang_sign
+            from (
+                select
+                (
+                    select sum(a.Donhang_Price_Combo - a.Donhang_Price_Discount+ a.Donhang_Price_Upsale)
+                    from Quanlybanhang_donhang a 
+                    where a.IsDelete = 0 and a.CreatedDate > DATE_ADD(CURDATE(), INTERVAL -30 DAY)
+                ) as Revenue,
+                (
+                    select sum(a.Donhang_Price_Combo - a.Donhang_Price_Discount+ a.Donhang_Price_Upsale - a.Donhang_Price_Payment)
+                    from Quanlybanhang_donhang a 
+                    where a.IsDelete = 0 and a.CreatedDate > DATE_ADD(CURDATE(), INTERVAL -30 DAY)
+                ) as Claim,
+                (
+                    select count(a.Donhang_Id)
+                    from Quanlybanhang_donhang a 
+                    where a.IsDelete = 0 and a.CreatedDate > DATE_ADD(CURDATE(), INTERVAL -30 DAY)
+                ) as TongDonHang,
+                (
+                    select count(a.Donhang_Id)
+                    from Quanlybanhang_donhang a 
+                    where a.IsDelete = 0 and a.CreatedDate > DATE_ADD(CURDATE(), INTERVAL -30 DAY) and a.Workingstatus_Id <= 7
+                ) as Working,
+                (
+                    select sum(a.Donhang_Price_Combo - a.Donhang_Price_Discount+ a.Donhang_Price_Upsale)
+                    from Quanlybanhang_donhang a 
+                    where a.IsDelete = 0 and a.CreatedDate <= DATE_ADD(CURDATE(), INTERVAL -30 DAY) and a.CreatedDate > DATE_ADD(CURDATE(), INTERVAL -60 DAY)
+                ) as Revenue_prev,
+                (
+                    select count(a.Donhang_Id)
+                    from Quanlybanhang_donhang a 
+                    where a.IsDelete = 0 and a.CreatedDate <= DATE_ADD(CURDATE(), INTERVAL -30 DAY) and a.CreatedDate > DATE_ADD(CURDATE(), INTERVAL -60 DAY)
+                ) as TongDonHang_prev
+            ) as a
+        """)
+
+        revenue_by_source = cursorbyname("""
+            select c.Source_Name, sum(Donhang_Price_Combo - Donhang_Price_Discount+ Donhang_Price_Upsale) Revenue
+            from Quanlybanhang_donhang a 
+            left join Quanlybanhang_customer b on a.Customer_Id = b.Customer_Id
+            left join Quanlybanhang_source c on b.Source_Id = c.Source_Id
+            where a.IsDelete = 0 and a.CreatedDate > DATE_ADD(CURDATE(), INTERVAL -30 DAY)
+            group by c.Source_Name
+            order by c.Source_Name
+        """)
+
+        revenue_by_product = cursorbyname("""
+            select b.Product_Name, sum(Donhang_Price_Combo - Donhang_Price_Discount+ Donhang_Price_Upsale) Revenue
+            from Quanlybanhang_donhang a 
+            left join Quanlybanhang_product b on a.Product_Id = b.Product_Id
+            where a.IsDelete = 0 and a.CreatedDate > DATE_ADD(CURDATE(), INTERVAL -30 DAY)
+            group by b.Product_Name
+            order by b.Product_Name
+        """)
+
+        revenue_by_source = {
+            'label': [i['Source_Name'] for i in revenue_by_source],
+            'value': [int(i['Revenue']) for i in revenue_by_source],
+        }
+
+        revenue_by_product = {
+            'label': [i['Product_Name'] for i in revenue_by_product],
+            'value': [int(i['Revenue']) for i in revenue_by_product],
+        }
+
+        # donhang_info = donhang_info[0]
+        # donhang_info['Revenue_sign'] = (1 if float(donhang_info['Revenue_per']) > 0 else -1) if float(donhang_info['Revenue_per']) != 0 else 0
+        # donhang_info['TongDonHang_sign'] = (1 if float(donhang_info['TongDonHang_per']) > 0 else -1) if float(donhang_info['TongDonHang_per']) != 0 else 0
+        return render(request, 'QLBH/dashboard.html', {'filteroption': 'Last 30 Days' , 'info': donhang_info[0], 'revenue_by_source': revenue_by_source, 'revenue_by_product': revenue_by_product})
 
 
 class Test(LoginRequiredMixin, View):
