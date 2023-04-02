@@ -93,7 +93,7 @@ DATABASES = {
         'NAME': 'rwkbmguo_moldesign',
         'USER': 'rwkbmguo_moladmin',
         'PASSWORD': ',2BpA}k?g_gl',
-        'HOST': 'c11.vinahost.vn',
+        'HOST': 'c12.vinahost.vn',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
